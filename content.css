@@ -1,0 +1,9 @@
+/* 指標指到推文id時改成顯示手 */
+.push-userid {
+    cursor: pointer;
+}
+
+/* 高亮度顯示的推文id */
+.highlight-selected-userid {
+    background-color: blue;
+}
