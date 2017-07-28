@@ -1,4 +1,5 @@
 let posterUserid = null; //文章作者id
+let selectedUserid = null; //點選的推文id
 
 //querySelectorAll
 const $qsa = function(selector, baseElement = document){
@@ -33,10 +34,17 @@ $qsa('.push-userid').forEach(pushUserid => {
             highlight.classList.remove('highlight-selected-userid');
         });
 
+        //假如點選的id是目前選擇的id，就取消選取
+        if (selectedUserid === userid) {
+            selectedUserid = null;
+            return;
+        }
+
         //新增highlight
         $qsa('.userid-'+userid).forEach(userid => {
             userid.classList.add('highlight-selected-userid');
         });
+        selectedUserid = userid; //更新目前選擇的id
     });
 });
 
