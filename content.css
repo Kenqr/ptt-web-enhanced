@@ -12,3 +12,13 @@
 .highlight-selected-userid {
     background-color: blue;
 }
+
+/* 推文樓層 */
+.push .floor {
+    position: absolute;
+    right: 100%;
+    min-width: 4em;
+    padding-right: 1em;
+    text-align: right;
+    color: gray;
+}

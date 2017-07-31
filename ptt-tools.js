@@ -20,6 +20,19 @@ $qsa('.article-metaline').forEach(articleMetaline => {
     }
 });
 
+//對所有推文進行處理
+let pushArray = $qsa('.push');
+for(let i=0; i<pushArray.length; i++) {
+    let push = pushArray[i];
+
+    //顯示樓層
+    let floor = document.createElement("span");
+    floor.classList.add('floor');
+    let textnode = document.createTextNode(`${i+1}樓`);
+    floor.appendChild(textnode);
+    push.insertBefore(floor, push.childNodes[0]);
+}
+
 //對所有推文id欄位進行處理
 $qsa('.push-userid').forEach(pushUserid => {
     let userid = pushUserid.innerHTML; //此則推文id
