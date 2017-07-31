@@ -7,9 +7,9 @@
 
     "content_scripts": [
         {
-            "matches": ["https://www.ptt.cc/bbs/*"],
-            "js": ["ptt-tools.js"],
-            "css": ["content.css"]
+            "matches": ["https://www.ptt.cc/bbs/*/M.*.html"],
+            "js": ["article.js"],
+            "css": ["article.css"]
         }
     ]
 }
