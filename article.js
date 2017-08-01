@@ -20,6 +20,12 @@ $qsa('.article-metaline').forEach(articleMetaline => {
     }
 });
 
+//推文數量統計用
+let pushCount = {
+    good: 0,
+    bad: 0,
+    normal: 0,
+};
 //對所有推文進行處理
 let pushArray = $qsa('.push');
 for(let i=0; i<pushArray.length; i++) {
@@ -31,7 +37,19 @@ for(let i=0; i<pushArray.length; i++) {
     let textnode = document.createTextNode(`${i+1}樓`);
     floor.appendChild(textnode);
     push.insertBefore(floor, push.childNodes[0]);
+
+    //統計推/噓/→
+    var pushTag = $qs('.push-tag', push).innerHTML;
+    if(pushTag == '推 ') pushCount.good++;
+    if(pushTag == '噓 ') pushCount.bad++;
+    if(pushTag == '→ ') pushCount.normal++;
 }
+
+//在文章後面顯示推文統計結果
+let pushStatistics = document.createElement('div');
+pushStatistics.classList.add('push-statistics');
+pushStatistics.textContent = `推噓文統計：推=${pushCount.good}, 噓=${pushCount.bad}, →=${pushCount.normal}`;
+$qs('#main-container').insertBefore(pushStatistics, $qs('#article-polling'));
 
 //對所有推文id欄位進行處理
 $qsa('.push-userid').forEach(pushUserid => {

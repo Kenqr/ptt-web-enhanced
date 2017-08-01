@@ -22,3 +22,12 @@
     text-align: right;
     color: gray;
 }
+
+.push-statistics {
+    margin: 10px auto;
+    width: 100%;
+    min-width: 600px;
+    max-width: 1200px;
+    font-size: 24px;
+    color: #bbb;
+}
