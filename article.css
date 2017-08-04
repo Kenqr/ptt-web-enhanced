@@ -40,6 +40,11 @@
     }
 }
 
+/* 5的倍數樓層加底線 */
+.push .floor-multiple-5 {
+    text-decoration: underline;
+}
+
 .push-statistics {
     margin: 10px auto;
     width: 100%;

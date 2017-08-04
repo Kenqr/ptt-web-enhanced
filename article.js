@@ -34,6 +34,7 @@ for(let i=0; i<pushArray.length; i++) {
     //顯示樓層
     let floor = document.createElement("span");
     floor.classList.add('floor');
+    if((i+1) % 5 == 0) floor.classList.add('floor-multiple-5'); //5的倍數樓層
     let textnode = document.createTextNode(`${i+1}樓`);
     floor.appendChild(textnode);
     push.insertBefore(floor, push.childNodes[0]);
