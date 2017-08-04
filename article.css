@@ -8,7 +8,7 @@
     background-color: darkSlateBlue;
 }
 
-/* 高亮度顯示的推文id */
+/* 高亮度顯示點選的推文id */
 .highlight-selected-userid {
     background-color: blue;
 }
@@ -45,6 +45,7 @@
     text-decoration: underline;
 }
 
+/* 推文統計 */
 .push-statistics {
     margin: 10px auto;
     width: 100%;
