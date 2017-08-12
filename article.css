@@ -54,3 +54,15 @@
     font-size: 24px;
     color: #bbb;
 }
+
+/* 指到圖片時，放大置中顯示 */
+.richcontent img:hover {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    max-width: calc(100vw - 50px);
+    max-height: calc(100vh - 50px);
+    box-shadow: 0 0 50px gray;
+}
