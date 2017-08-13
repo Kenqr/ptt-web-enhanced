@@ -5,6 +5,14 @@
 
     "description": "幫 PTT web 版增加各種方便的功能",
 
+    "permissions": [
+        "downloads"
+    ],
+
+    "background": {
+        "scripts": ["background.js"]
+    },
+
     "content_scripts": [
         {
             "matches": ["https://www.ptt.cc/bbs/*/M.*.html"],

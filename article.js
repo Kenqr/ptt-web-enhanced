@@ -11,6 +11,25 @@ const $qs = function(selector, baseElement = document){
     return baseElement.querySelector(selector);
 };
 
+//顯示通知訊息
+let pweNotify = document.createElement('div');
+pweNotify.classList.add('pwe-notify', 'hidden');
+$qs('body').insertBefore(pweNotify, null);
+let notifyTimeoutId = undefined;
+const notify = function(message){
+    //移除原有的timeout
+    if(notifyTimeoutId) {
+        clearTimeout(notifyTimeoutId);
+        notifyTimeoutId = undefined;
+    }
+    //顯示訊息，並定時移除
+    pweNotify.textContent = message;
+    pweNotify.classList.remove('hidden');
+    notifyTimeoutId = setTimeout(function(){
+        pweNotify.classList.add('hidden');
+    }, 5000);
+};
+
 //找出文章作者
 $qsa('.article-metaline').forEach(articleMetaline => {
     if ($qs('.article-meta-tag', articleMetaline).innerHTML == '作者') {
@@ -86,3 +105,17 @@ if (posterUserid) {
         userid.classList.add('highlight-poster-userid');
     });
 }
+
+//對所有圖片進行處理
+$qsa('.richcontent img').forEach(img => {
+    //點選圖片時進行下載
+    img.addEventListener('click', function(){
+        //通知背景程式進行下載
+        browser.runtime.sendMessage({
+            url: img.src
+        }).then(function(filename){
+            //顯示下載完成訊息
+            notify(`圖片已下載至${filename}`);
+        });
+    });    
+});

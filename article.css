@@ -1,3 +1,8 @@
+/* 隱藏元素 */
+.hidden {
+    display: none !important;
+}
+
 /* 指標指到推文id時改成顯示手 */
 .push-userid {
     cursor: pointer;
@@ -65,4 +70,16 @@
     max-width: calc(100vw - 50px);
     max-height: calc(100vh - 50px);
     box-shadow: 0 0 50px gray;
+    cursor: pointer;
+}
+
+/* 通知視窗 */
+.pwe-notify {
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    z-index: 101;
+    padding: 5px;
+    background-color: lightblue;
+    box-shadow: 0 0 20px white;
 }
