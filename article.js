@@ -107,7 +107,13 @@ if (posterUserid) {
 }
 
 //對所有圖片進行處理
-$qsa('.richcontent img').forEach(img => {
+$qsa('.richcontent').forEach(richcontent => {
+    let img = $qs('img', richcontent);
+    if(!img) return;
+
+    //增加class，以套用CSS
+    richcontent.classList.add('richcontent-img');
+    
     //點選圖片時進行下載
     img.addEventListener('click', function(){
         //通知背景程式進行下載
