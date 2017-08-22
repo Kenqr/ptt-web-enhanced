@@ -1,7 +1,11 @@
 const pweSettings = {};
 
 pweSettings.defaultSettings = {
+    showFloor: true,
+    countPushStatistics: true,
+    highlightPosterUserid: true,
     resizeImage: true,
+    clickToDownloadImage: false,
 };
 
 pweSettings.get = async function(key) {

@@ -17,7 +17,10 @@
     "content_scripts": [
         {
             "matches": ["https://www.ptt.cc/bbs/*/M.*.html"],
-            "js": ["article.js"],
+            "js": [
+                "utils/settings.js",
+                "article.js"
+            ],
             "css": ["article.css"]
         }
     ],
