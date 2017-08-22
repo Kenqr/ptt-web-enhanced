@@ -5,6 +5,12 @@
 
     "description": "幫 PTT web 版增加各種方便的功能",
 
+    "applications": {
+        "gecko": {
+            "strict_min_version": "52.0"
+        }
+    },
+
     "permissions": [
         "downloads",
         "storage"
