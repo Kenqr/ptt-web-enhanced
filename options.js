@@ -2,7 +2,7 @@ const init = async function(){
     const values = await pweSettings.getAll();
 
     //處理boolean設定
-    document.querySelectorAll('[option-type="boolean"]').forEach(option => {
+    $qsa('[option-type="boolean"]').forEach(option => {
         //載入設定
         option.checked = values[option.name];
 

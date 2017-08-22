@@ -16,16 +16,6 @@ const init = async function(){
     if(settings.clickToDownloadImage) clickToDownloadImage();
 };
 
-//querySelectorAll
-const $qsa = function(selector, baseElement = document){
-    return [...baseElement.querySelectorAll(selector)];
-};
-
-//querySelector
-const $qs = function(selector, baseElement = document){
-    return baseElement.querySelector(selector);
-};
-
 //顯示通知訊息
 let notify = (() => {
     let pweNotify = document.createElement('div');

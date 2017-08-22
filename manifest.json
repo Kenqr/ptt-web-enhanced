@@ -25,6 +25,7 @@
             "matches": ["https://www.ptt.cc/bbs/*/M.*.html"],
             "js": [
                 "utils/settings.js",
+                "utils/helpers.js",
                 "article.js"
             ],
             "css": ["article.css"]
