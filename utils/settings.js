@@ -22,4 +22,8 @@ pweSettings.set = async function(key, value) {
     return browser.storage.local.set({
         [key]: value
     });
-}
+};
+
+pweSettings.reset = async function() {
+    return browser.storage.local.clear();
+};
