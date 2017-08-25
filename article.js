@@ -14,6 +14,8 @@ const init = async function(){
     if(settings.resizeImage) resizeImage();
 
     if(settings.clickToDownloadImage) clickToDownloadImage();
+
+    if(settings.navbarAutohide) navbarAutohide();
 };
 
 //顯示通知訊息
@@ -137,6 +139,12 @@ const clickToDownloadImage = function(){
             });
         });    
     });
+};
+
+/* 頂部和底部導覽列自動隱藏 */
+const navbarAutohide = function(){
+    $qs('#topbar-container').classList.add('autohide');
+    $qs('#navigation-container').classList.add('autohide');
 };
 
 //高亮度文章作者id

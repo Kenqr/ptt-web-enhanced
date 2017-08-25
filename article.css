@@ -70,6 +70,17 @@
     max-height: calc(100vh - 200px);
 }
 
+/* 頂部和底部導覽列自動隱藏 */
+#topbar-container.autohide,
+#navigation-container.autohide {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+#topbar-container:hover,
+#navigation-container:hover {
+    opacity: 1;
+}
+
 /* 通知視窗 */
 .pwe-notify {
     position: fixed;

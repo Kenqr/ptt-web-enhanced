@@ -6,6 +6,7 @@ pweSettings.defaultSettings = {
     highlightPosterUserid: true,
     resizeImage: true,
     clickToDownloadImage: false,
+    navbarAutohide: true,
 };
 
 pweSettings.get = async function(key) {
