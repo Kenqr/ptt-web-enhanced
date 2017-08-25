@@ -60,17 +60,15 @@
     color: #bbb;
 }
 
-/* 指到圖片時放大顯示 */
-.richcontent-img {
-    transition: max-width 0.3s, max-height 0.3s;
-}
-.richcontent-img:hover {
-    z-index: 100;
+/* 圖片放大顯示 */
+.richcontent-resize {
     max-width: calc(100vw - 50px);
     max-height: calc(100vh - 200px);
     cursor: pointer;
-    transition: max-width 0.3s, max-height 0.3s;
-} 
+}
+.richcontent-resize img {
+    max-height: calc(100vh - 200px);
+}
 
 /* 通知視窗 */
 .pwe-notify {

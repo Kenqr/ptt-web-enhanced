@@ -118,7 +118,7 @@ const resizeImage = function(){
         if(!img) return;
 
         //增加class，以套用CSS
-        richcontent.classList.add('richcontent-img');
+        richcontent.classList.add('richcontent-resize');
     });
 };
 
