@@ -17,8 +17,8 @@ const init = async function(){
 };
 
 //顯示通知訊息
-let notify = (() => {
-    let pweNotify = document.createElement('div');
+const notify = (() => {
+    const pweNotify = document.createElement('div');
     pweNotify.classList.add('pwe-notify', 'hidden');
     $qs('body').insertBefore(pweNotify, null);
     let notifyTimeoutId = undefined;
@@ -41,7 +41,7 @@ let notify = (() => {
 //幫所有推文id加上class，方便後續select
 const processPushUserid = function(){
     $qsa('.push-userid').forEach(pushUserid => {
-        let userid = pushUserid.innerHTML.trim(); //此則推文id
+        const userid = pushUserid.innerHTML.trim(); //此則推文id
         pushUserid.classList.add('userid-'+userid);
     });
 };
@@ -49,10 +49,10 @@ const processPushUserid = function(){
 //顯示樓層
 const showFloor = function(){
     $qsa('.push').forEach((push, index) => {
-        let floor = document.createElement("span");
+        const floor = document.createElement('span');
         floor.classList.add('floor');
         if((index+1) % 5 == 0) floor.classList.add('floor-multiple-5'); //5的倍數樓層
-        let textnode = document.createTextNode(`${index+1}樓`);
+        const textnode = document.createTextNode(`${index+1}樓`);
         floor.appendChild(textnode);
         push.insertBefore(floor, push.childNodes[0]);
     });
@@ -61,7 +61,7 @@ const showFloor = function(){
 //推文統計
 const countPushStatistics = function(){
     //推文數量統計用
-    let pushCount = {
+    const pushCount = {
         good: 0,
         bad: 0,
         normal: 0,
@@ -76,7 +76,7 @@ const countPushStatistics = function(){
     });
 
     //在文章後面顯示推文統計結果
-    let pushStatistics = document.createElement('div');
+    const pushStatistics = document.createElement('div');
     pushStatistics.classList.add('push-statistics');
     pushStatistics.textContent = `推噓文統計：推=${pushCount.good}, 噓=${pushCount.bad}, →=${pushCount.normal}`;
     $qs('#main-container').insertBefore(pushStatistics, $qs('#article-polling'));
@@ -87,7 +87,7 @@ const clickToHighlightUserid = function(){
     let selectedUserid = null; //點選的推文id
 
     $qsa('.push-userid').forEach(pushUserid => {
-        let userid = pushUserid.innerHTML; //此則推文id
+        const userid = pushUserid.innerHTML; //此則推文id
 
         pushUserid.addEventListener('click', function(){
             //移除原有highlight
@@ -114,7 +114,7 @@ const clickToHighlightUserid = function(){
 const resizeImage = function(){
     //對所有圖片進行處理
     $qsa('.richcontent').forEach(richcontent => {
-        let img = $qs('img', richcontent);
+        const img = $qs('img', richcontent);
         if(!img) return;
 
         //增加class，以套用CSS
@@ -146,8 +146,8 @@ const highlightPosterUserid = function(){
     //找出文章作者
     $qsa('.article-metaline').forEach(articleMetaline => {
         if ($qs('.article-meta-tag', articleMetaline).innerHTML == '作者') {
-            let pattern = /\w+/;
-            let matches = $qs('.article-meta-value', articleMetaline).innerHTML.match(pattern);
+            const pattern = /\w+/;
+            const matches = $qs('.article-meta-value', articleMetaline).innerHTML.match(pattern);
             if(matches) posterUserid = matches[0];
         }
     });
