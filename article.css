@@ -3,6 +3,11 @@
     display: none !important;
 }
 
+/* 可點選的元素 */
+.clickable {
+    cursor: pointer;
+}
+
 /* 指標指到推文id時改成顯示手 */
 .push-userid {
     cursor: pointer;
@@ -64,7 +69,6 @@
 .richcontent-resize {
     max-width: calc(100vw - 50px);
     max-height: calc(100vh - 200px);
-    cursor: pointer;
 }
 .richcontent-resize img {
     max-height: calc(100vh - 200px);

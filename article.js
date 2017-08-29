@@ -128,6 +128,8 @@ const resizeImage = function(){
 const clickToDownloadImage = function(){
     //對所有圖片進行處理
     $qsa('.richcontent img').forEach(img => {
+        img.classList.add('clickable'); //指到圖片時滑鼠指標變成手
+
         //點選圖片時進行下載
         img.addEventListener('click', function(){
             //通知背景程式進行下載
