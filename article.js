@@ -41,7 +41,7 @@ let notify = (() => {
 //幫所有推文id加上class，方便後續select
 const processPushUserid = function(){
     $qsa('.push-userid').forEach(pushUserid => {
-        let userid = pushUserid.innerHTML; //此則推文id
+        let userid = pushUserid.innerHTML.trim(); //此則推文id
         pushUserid.classList.add('userid-'+userid);
     });
 };
