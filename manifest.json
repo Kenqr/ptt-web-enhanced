@@ -7,7 +7,7 @@
 
     "applications": {
         "gecko": {
-            "id": "ptt_web_enhanced@kenqr.github.io",
+            "id": "{27376da4-366d-4549-878e-5934e0114107}",
             "strict_min_version": "52.0"
         }
     },
