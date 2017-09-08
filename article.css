@@ -31,22 +31,17 @@
     text-align: right;
     color: gray;
 }
-/* 左邊空間不夠時，改成顯示在推文時間左邊 */
+/* 左邊空間不夠時，改成指到推文時浮現 */
 @media screen and (max-width: 1400px) {
     .push .floor {
-        left: calc(100% - 10em);
-    }
-}
-/* 推文時間左邊空間也不夠時，改成滑鼠指到推文時滑出 */
-@media screen and (max-width: 1000px) {
-    .push .floor {
-        left: 100%;
+        left: calc(100% - 4em);
+        opacity: 0;
         color: black;
         background-color: lightgray;
-        transition: left 0.2s;
+        transition: opacity 0.3s;
     }
     .push:hover .floor {
-        left: calc(100% - 4em);
+        opacity: 1;
     }
 }
 
