@@ -29,7 +29,8 @@
                 "utils/helpers.js",
                 "article.js"
             ],
-            "css": ["article.css"]
+            "css": ["article.css"],
+            "run_at": "document_end"
         }
     ],
 
