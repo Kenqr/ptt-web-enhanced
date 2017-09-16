@@ -10,21 +10,21 @@ pweSettings.defaultSettings = {
 };
 
 pweSettings.get = async function(key) {
-    const settings = await browser.storage.local.get(key);
+    const settings = await browser.storage.sync.get(key);
     return (settings[key] !== undefined) ? settings[key] : defaultSettings[key];
 };
 
 pweSettings.getAll = async function() {
-    const settings = await browser.storage.local.get();
+    const settings = await browser.storage.sync.get();
     return Object.assign({}, pweSettings.defaultSettings, settings);
 };
 
 pweSettings.set = async function(key, value) {
-    return browser.storage.local.set({
+    return browser.storage.sync.set({
         [key]: value
     });
 };
 
 pweSettings.reset = async function() {
-    return browser.storage.local.clear();
+    return browser.storage.sync.clear();
 };
