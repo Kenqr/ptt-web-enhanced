@@ -17,7 +17,7 @@ const init = async function(){
 
     if(settings.navbarAutohide) navbarAutohide();
 
-    if(settings.redirectReturnToBoard) redirectReturnToBoard();
+    if(settings.detectThread) detectThread();
 };
 
 //顯示通知訊息
@@ -151,10 +151,15 @@ const navbarAutohide = function(){
     $qs('#navigation-container').classList.add('pwe-autohide');
 };
 
-/* 返回看板指向文章所在分頁 */
-const redirectReturnToBoard = function(){
+/* 自動連結討論串 */
+const detectThread = function(){
     const getArticleId = function(url){
         /\/\w\.(\d+)\.[\w.]+$/.test(url.pathname);
+        return RegExp.$1;
+    };
+
+    const getArticleTitleToken = function(title){
+        /^(?:Re: ?)*(.*)$/i.test(title);
         return RegExp.$1;
     };
 
@@ -211,7 +216,7 @@ const redirectReturnToBoard = function(){
             articlePage = articlePageGuess;
 
             return fetchListPageDocument(articlePageGuess).then(doc => {
-                var articles = fetchArticles(doc, 'all');
+                articles = fetchArticles(doc, 'all');
                 var minId = articles[0].id;
                 var maxId = articles[articles.length - 1].id;
 
@@ -245,8 +250,41 @@ const redirectReturnToBoard = function(){
         return searchNext();
     };
 
+    const seekPrevPage = function(){
+        var searchNext = function(){
+            if (--page < pageMin) { return null; }
+            return fetchListPageDocument(page).then(doc => {
+                let prev = fetchArticles(doc, 'all').reverse().find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
+                if (prev) { return prev; }
+                return searchNext();
+            });
+        };
+
+        let prev = articles.slice(0, articleIndex).find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
+        if (prev) { return Promise.resolve(prev); }
+        let page = articlePage, pageMin = Math.max(page - 4, firstPage);
+        return searchNext();
+    };
+
+    const seekNextPage = function(){
+        var searchNext = function(){
+            if (++page > pageMax) { return null; }
+            return fetchListPageDocument(page).then(doc => {
+                let next = fetchArticles(doc, 'all').find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
+                if (next) { return next; }
+                return searchNext();
+            });
+        };
+
+        let next = articles.slice(articleIndex + 1).find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
+        if (next) { return Promise.resolve(next); }
+        let page = articlePage, pageMax = Math.min(page + 4, lastPage);
+        return searchNext();
+    };
+
     var curUrl = new URL(location.href);
-    var articleId = getArticleId(curUrl), articlePage = -1,
+    var articles,
+        articleId = getArticleId(curUrl), articlePage = -1, article, articleIndex,
         firstId, firstPage = 1,
         lastId, lastPage;
 
@@ -270,6 +308,33 @@ const redirectReturnToBoard = function(){
             $qsa('a.board').forEach(elem => {
               elem.href = newUrl.pathname;
             });
+
+            articleIndex = articles.findIndex(x => x.id === articleId);
+            article = articles[articleIndex];
+        });
+    }).then(() => {
+        return seekPrevPage().then(prevPage => {
+            if (prevPage) {
+                var prevPageElem = document.createElement('a');
+                prevPageElem.href = prevPage.href;
+            } else {
+                var prevPageElem = document.createElement('del');
+            }
+            prevPageElem.classList.add('pwe-thread');
+            prevPageElem.textContent = '上一篇';
+            $qs('#navigation').insertBefore(prevPageElem, $qs('#navigation .bar'));
+        });
+    }).then(() => {
+        return seekNextPage().then(nextPage => {
+            if (nextPage) {
+                var nextPageElem = document.createElement('a');
+                nextPageElem.href = nextPage.href;
+            } else {
+                var nextPageElem = document.createElement('del');
+            }
+            nextPageElem.classList.add('pwe-thread');
+            nextPageElem.textContent = '下一篇';
+            $qs('#navigation').insertBefore(nextPageElem, $qs('#navigation .bar'));
         });
     }).catch(ex => {
       console.error(ex);
