@@ -16,6 +16,8 @@ const init = async function(){
     if(settings.clickToDownloadImage) clickToDownloadImage();
 
     if(settings.navbarAutohide) navbarAutohide();
+
+    if(settings.redirectReturnToBoard) redirectReturnToBoard();
 };
 
 //顯示通知訊息
@@ -147,6 +149,131 @@ const clickToDownloadImage = function(){
 const navbarAutohide = function(){
     $qs('#topbar-container').classList.add('pwe-autohide');
     $qs('#navigation-container').classList.add('pwe-autohide');
+};
+
+/* 返回看板指向文章所在分頁 */
+const redirectReturnToBoard = function(){
+    const getArticleId = function(url){
+        /\/\w\.(\d+)\.[\w.]+$/.test(url.pathname);
+        return RegExp.$1;
+    };
+
+    const fetchDocument = function(url){
+        return fetch(url, {credentials: 'include'}).then(response => {
+            return response.text();
+        }).then(text => {
+            return new DOMParser().parseFromString(text, 'text/html');
+        });
+    };
+
+    const fetchListPageDocument = function(index){
+        // index == undefined 為最後一頁
+        return fetchDocument(new URL(`index${index || ""}.html`, curUrl));
+    };
+
+    const fetchArticles = function(doc, method = 'all'){
+        var elems = $qsa('.r-list-container .r-ent .title a, .r-list-container .r-list-sep', doc);
+        var sepIndex = elems.findIndex(x => x.classList.contains('r-list-sep'));
+        if (sepIndex !== -1) { elems = elems.slice(0, sepIndex); }
+
+        switch (method) {
+            case 'all':
+                return elems.map(elem => ({
+                    id: getArticleId(new URL(elem.href, curUrl)),
+                    title: elem.textContent,
+                    href: elem.href,
+                }));
+            case 'first':
+                var elem = elems[0];
+                if (!elem) { return null; }
+                return {
+                    id: getArticleId(new URL(elem.href, curUrl)),
+                    title: elem.textContent,
+                    href: elem.href,
+                };
+            case 'last':
+                var elem = elems.pop();
+                if (!elem) { return null; }
+                return {
+                    id: getArticleId(new URL(elem.href, curUrl)),
+                    title: elem.textContent,
+                    href: elem.href,
+                };
+        }
+        return null;
+    };
+
+    const seekArticlePage = function(firstPage, lastPage){
+        var searchNext = function(){
+            // 二分搜尋法
+            var articlePageGuess = Math.floor(firstPage + (lastPage - firstPage) / 2);
+            if (articlePageGuess === articlePage) { articlePageGuess++; }
+            articlePage = articlePageGuess;
+
+            return fetchListPageDocument(articlePageGuess).then(doc => {
+                var articles = fetchArticles(doc, 'all');
+                var minId = articles[0].id;
+                var maxId = articles[articles.length - 1].id;
+
+                if (articleId < minId) {
+                    if (firstPage === lastPage) {
+                        // 此 ID 的文章不存在
+                        return -1;
+                    }
+                    lastId = minId;
+                    lastPage = articlePageGuess;
+                    return searchNext();
+                } else if (articleId > maxId) {
+                    if (firstPage === lastPage) {
+                        // 此 ID 的文章不存在
+                        return -1;
+                    }
+                    firstId = maxId;
+                    firstPage = articlePageGuess;
+                    return searchNext();
+                } else {
+                    var article = articles.find(x => x.id === articleId);
+                    if (!article) {
+                        // 此 ID 的文章不存在
+                        return -1;
+                    }
+                    return articlePageGuess;
+                }
+            });
+        };
+
+        return searchNext();
+    };
+
+    var curUrl = new URL(location.href);
+    var articleId = getArticleId(curUrl), articlePage = -1,
+        firstId, firstPage = 1,
+        lastId, lastPage;
+
+    return Promise.resolve().then(() => {
+        return fetchListPageDocument(1).then(doc => {
+            firstId = fetchArticles(doc, 'first').id;
+        });
+    }).then(() => {
+        return fetchListPageDocument().then(doc => {
+            lastId = fetchArticles(doc, 'last').id;
+            /\/index(\d+)\.html$/.test($qsa('.btn-group-paging a.btn', doc)[1].href);
+            lastPage = parseInt(RegExp.$1, 10) + 1;
+        });
+    }).then(() => {
+        return seekArticlePage(firstPage, lastPage).then(articlePageIndex => {
+            articlePage = articlePageIndex;
+            if (articlePage === -1) { throw new Error(`'${curUrl}' 頁面不存在`); }
+
+            // 重導向「返回看板」
+            let newUrl = new URL(`index${articlePage}.html`, curUrl);
+            $qsa('a.board').forEach(elem => {
+              elem.href = newUrl.pathname;
+            });
+        });
+    }).catch(ex => {
+      console.error(ex);
+    });
 };
 
 //高亮度文章作者id
