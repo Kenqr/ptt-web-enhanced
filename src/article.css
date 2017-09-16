@@ -1,0 +1,92 @@
+/* 隱藏元素 */
+.hidden {
+    display: none !important;
+}
+
+/* 可點選的元素 */
+.clickable {
+    cursor: pointer;
+}
+
+/* 指標指到推文id時改成顯示手 */
+.push-userid {
+    cursor: pointer;
+}
+
+/* 高亮度顯示文章作者的id */
+.highlight-poster-userid {
+    background-color: darkSlateBlue;
+}
+
+/* 高亮度顯示點選的推文id */
+.highlight-selected-userid {
+    background-color: blue;
+}
+
+/* 推文樓層 */
+.push .floor {
+    position: absolute;
+    left: -4.5em;
+    width: 4em;
+    text-align: right;
+    color: gray;
+}
+/* 左邊空間不夠時，改成指到推文時浮現 */
+@media screen and (max-width: 1400px) {
+    .push .floor {
+        left: calc(100% - 4em);
+        opacity: 0;
+        color: black;
+        background-color: lightgray;
+        transition: opacity 0.3s;
+    }
+    .push:hover .floor {
+        opacity: 1;
+    }
+}
+
+/* 5的倍數樓層加底線 */
+.push .floor-multiple-5 {
+    text-decoration: underline;
+}
+
+/* 推文統計 */
+.push-statistics {
+    margin: 10px auto;
+    width: 100%;
+    min-width: 600px;
+    max-width: 1200px;
+    font-size: 24px;
+    color: #bbb;
+}
+
+/* 圖片放大顯示 */
+.richcontent-resize {
+    max-width: calc(100vw - 50px);
+    max-height: calc(100vh - 200px);
+}
+.richcontent-resize img {
+    max-height: calc(100vh - 200px);
+}
+
+/* 頂部和底部導覽列自動隱藏 */
+#topbar-container.autohide,
+#navigation-container.autohide {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+#topbar-container:hover,
+#navigation-container:hover {
+    opacity: 1;
+}
+
+/* 通知視窗 */
+.pwe-notify {
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    z-index: 101;
+    padding: 5px;
+    background-color: lightblue;
+    box-shadow: 0 0 20px white;
+}
