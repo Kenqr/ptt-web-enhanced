@@ -313,7 +313,7 @@ const detectThread = function(){
             article = articles[articleIndex];
         });
     }).then(() => {
-        return seekPrevPage().then(prevPage => {
+        return Promise.all([seekPrevPage(), seekNextPage()]).then(([prevPage, nextPage]) => {
             if (prevPage) {
                 var prevPageElem = document.createElement('a');
                 prevPageElem.href = prevPage.href;
@@ -323,9 +323,7 @@ const detectThread = function(){
             prevPageElem.classList.add('pwe-thread');
             prevPageElem.textContent = '上一篇';
             $qs('#navigation').insertBefore(prevPageElem, $qs('#navigation .bar'));
-        });
-    }).then(() => {
-        return seekNextPage().then(nextPage => {
+
             if (nextPage) {
                 var nextPageElem = document.createElement('a');
                 nextPageElem.href = nextPage.href;
