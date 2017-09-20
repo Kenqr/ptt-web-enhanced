@@ -7,7 +7,7 @@ pweSettings.defaultSettings = {
     resizeImage: true,
     clickToDownloadImage: false,
     navbarAutohide: true,
-    detectThread: true,
+    detectThread: false,
 };
 
 pweSettings.get = async function(key) {
