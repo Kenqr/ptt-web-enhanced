@@ -1,8 +1,8 @@
 const init = async function(){
     const settings = await pweSettings.getAll();
 
-    // 避免套件停用後重新啟用時重複執行
-    if ($qs('html.pwe')) { return; }
+    // 套件重新啟用時重新載入頁面
+    if ($qs('html.pwe')) { window.location.reload(); }
     $qs('html').classList.add('pwe');
 
     processPushUserid();
