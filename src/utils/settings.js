@@ -1,31 +1,47 @@
-const pweSettings = {};
+const pweSettings = (function(){
+    const pweSettings = {};
 
-pweSettings.defaultSettings = {
-    showFloor: true,
-    countPushStatistics: true,
-    highlightPosterUserid: true,
-    resizeImage: true,
-    clickToDownloadImage: false,
-    navbarAutohide: true,
-    detectThread: false,
-};
+    let storage;
+    const defaultSettings = {
+        showFloor: true,
+        countPushStatistics: true,
+        highlightPosterUserid: true,
+        resizeImage: true,
+        clickToDownloadImage: false,
+        navbarAutohide: true,
+        detectThread: false,
+    };
 
-pweSettings.get = async function(key) {
-    const settings = await browser.storage.local.get(key);
-    return (settings[key] !== undefined) ? settings[key] : defaultSettings[key];
-};
+    const init = function() {
+        //檢查是否有sync storage可用，沒有的話就用local storage
+        return browser.storage.sync.get().then(() => {
+            storage = browser.storage.sync;
+        }, () => {
+            storage = browser.storage.local;
+        });
+    };
 
-pweSettings.getAll = async function() {
-    const settings = await browser.storage.local.get();
-    return Object.assign({}, pweSettings.defaultSettings, settings);
-};
+    pweSettings.get = async function(key) {
+        const settings = await storage.get(key);
+        return (settings[key] !== undefined) ? settings[key] : defaultSettings[key];
+    };
 
-pweSettings.set = async function(key, value) {
-    return browser.storage.local.set({
-        [key]: value
-    });
-};
+    pweSettings.getAll = async function() {
+        const settings = await storage.get();
+        return Object.assign({}, defaultSettings, settings);
+    };
 
-pweSettings.reset = async function() {
-    return browser.storage.local.clear();
-};
+    pweSettings.set = async function(key, value) {
+        return storage.set({
+            [key]: value
+        });
+    };
+
+    pweSettings.reset = async function() {
+        return storage.clear();
+    };
+
+    pweSettings.ready = init();
+
+    return pweSettings;
+})();
