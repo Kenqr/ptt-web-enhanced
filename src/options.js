@@ -1,4 +1,6 @@
-const init = function(){
+const init = async function(){
+    await pweSettings.ready;
+
     loadSettings();
 
     //修改時自動寫入
