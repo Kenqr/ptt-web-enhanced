@@ -5,7 +5,7 @@ const init = async function(){
 
     //修改時自動寫入
     $qsa('[option-type="boolean"]').forEach(option => {
-        option.addEventListener('blur', function(event){
+        option.addEventListener('change', function(event){
             pweSettings.set(event.target.name, event.target.checked);
         });
     });
