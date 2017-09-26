@@ -360,7 +360,7 @@ const highlightPosterUserid = function(){
 
     //幫推文的文章作者id加上高亮度
     if (posterUserid) {
-        $qsa('.userid-'+posterUserid).forEach(userid => {
+        $qsa('.pwe-userid-'+posterUserid).forEach(userid => {
             userid.classList.add('pwe-highlight-poster-userid');
         });
     }
