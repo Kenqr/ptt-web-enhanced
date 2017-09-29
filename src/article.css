@@ -13,9 +13,15 @@
     cursor: pointer;
 }
 
-/* 高亮度顯示文章作者的id */
-.pwe-highlight-poster-userid {
-    background-color: darkSlateBlue;
+/* 作者的推文使用較明顯的箭頭 */
+.push-tag.pwe-poster-push-tag {
+    position: relative;
+    color: black;
+}
+.push-tag.pwe-poster-push-tag:before {
+    content: '⇒';
+    position: absolute;
+    color: aqua;
 }
 
 /* 高亮度顯示點選的推文id */

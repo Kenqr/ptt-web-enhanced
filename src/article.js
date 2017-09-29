@@ -345,7 +345,7 @@ const detectThread = function(){
     });
 };
 
-//高亮度文章作者id
+//作者的推文使用較明顯的箭頭
 const highlightPosterUserid = function(){
     let posterUserid = undefined; //文章作者id
 
@@ -358,10 +358,11 @@ const highlightPosterUserid = function(){
         }
     });
 
-    //幫推文的文章作者id加上高亮度
+    //把文章作者的箭頭加上class
     if (posterUserid) {
         $qsa('.pwe-userid-'+posterUserid).forEach(userid => {
-            userid.classList.add('pwe-highlight-poster-userid');
+            const pushTag = $qs('.push-tag', userid.parentElement);
+            pushTag.classList.add('pwe-poster-push-tag');
         });
     }
 };
