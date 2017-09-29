@@ -151,13 +151,13 @@ const clickToDownloadImage = function(){
     });
 };
 
-/* 頂部和底部導覽列自動隱藏 */
+//頂部和底部導覽列自動隱藏
 const navbarAutohide = function(){
     $qs('#topbar-container').classList.add('pwe-autohide');
     $qs('#navigation-container').classList.add('pwe-autohide');
 };
 
-/* 自動連結討論串 */
+//自動連結討論串
 const detectThread = function(){
     const getArticleId = function(url){
         /\/\w\.(\d+)\.[\w.]+$/.test(url.pathname);
