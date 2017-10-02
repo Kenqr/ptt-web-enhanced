@@ -96,10 +96,10 @@ const countPushStatistics = function(){
 const clickToHighlightUserid = function(){
     let selectedUserid = null; //點選的推文id
 
-    $qsa('.push-userid').forEach(pushUserid => {
-        const userid = pushUserid.innerHTML; //此則推文id
+    $qsa('.push').forEach(push => {
+        const userid = $qs('.push-userid', push).innerHTML; //此則推文id
 
-        pushUserid.addEventListener('click', function(){
+        push.addEventListener('click', function(){
             //移除原有highlight
             $qsa('.pwe-highlight-push').forEach(highlight => {
                 highlight.classList.remove('pwe-highlight-push');

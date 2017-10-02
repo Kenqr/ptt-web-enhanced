@@ -8,11 +8,6 @@
     cursor: pointer;
 }
 
-/* 指標指到推文id時改成顯示手 */
-.push-userid {
-    cursor: pointer;
-}
-
 /* 作者的推文使用較明顯的箭頭 */
 .push-tag.pwe-poster-push-tag {
     position: relative;
