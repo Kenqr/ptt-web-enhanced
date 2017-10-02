@@ -92,7 +92,7 @@ const countPushStatistics = function(){
     $qs('#main-container').insertBefore(pushStatistics, $qs('#article-polling'));
 };
 
-//點選id時，將推文相同id高亮度顯示
+//點選id時，將推文相同id的推文高亮度顯示
 const clickToHighlightUserid = function(){
     let selectedUserid = null; //點選的推文id
 
@@ -101,8 +101,8 @@ const clickToHighlightUserid = function(){
 
         pushUserid.addEventListener('click', function(){
             //移除原有highlight
-            $qsa('.pwe-highlight-selected-userid').forEach(highlight => {
-                highlight.classList.remove('pwe-highlight-selected-userid');
+            $qsa('.pwe-highlight-push').forEach(highlight => {
+                highlight.classList.remove('pwe-highlight-push');
             });
 
             //假如點選的id是目前選擇的id，就取消選取
@@ -113,7 +113,7 @@ const clickToHighlightUserid = function(){
 
             //新增highlight
             $qsa('.pwe-userid-'+userid).forEach(userid => {
-                userid.classList.add('pwe-highlight-selected-userid');
+                userid.parentElement.classList.add('pwe-highlight-push');
             });
             selectedUserid = userid; //更新目前選擇的id
         });

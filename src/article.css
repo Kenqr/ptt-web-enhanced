@@ -24,9 +24,9 @@
     color: aqua;
 }
 
-/* 高亮度顯示點選的推文id */
-.pwe-highlight-selected-userid {
-    background-color: blue;
+/* 高亮度顯示的推文 */
+.pwe-highlight-push {
+    background-color: rgb(50, 50, 50);
 }
 
 /* 推文樓層 */
