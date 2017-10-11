@@ -11,6 +11,8 @@ const init = async function(){
 
     if(settings.showFloor) showFloor();
 
+    pushTitleFloor();
+
     if(settings.countPushStatistics) countPushStatistics();
 
     highlightPush.on();
@@ -65,6 +67,13 @@ const showFloor = function(){
         const textnode = document.createTextNode(`${index+1}樓`);
         floor.appendChild(textnode);
         push.insertBefore(floor, push.childNodes[0]);
+    });
+};
+
+//指到推文顯示樓層
+const pushTitleFloor = function(){
+    $qsa('.push').forEach((push, index) => {
+        push.title = `${index+1}樓`;
     });
 };
 
