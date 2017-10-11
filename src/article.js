@@ -13,7 +13,7 @@ const init = async function(){
 
     if(settings.countPushStatistics) countPushStatistics();
 
-    clickToHighlightUserid();
+    highlightPush.on();
 
     if(settings.highlightPosterUserid) highlightPosterUserid();
 
@@ -92,33 +92,72 @@ const countPushStatistics = function(){
     $qs('#main-container').insertBefore(pushStatistics, $qs('#article-polling'));
 };
 
-//點選id時，將推文相同id的推文高亮度顯示
-const clickToHighlightUserid = function(){
+//點選推文時，將相同id的推文高亮度顯示
+const highlightPush = (function(){
+    let active; //此功能開啟狀態
     let selectedUserid = null; //點選的推文id
 
-    $qsa('.push').forEach(push => {
-        const userid = $qs('.push-userid', push).innerHTML; //此則推文id
+    //開啟此項功能
+    const on = function(){
+        if (active === true) return;
+        active = true;
 
-        push.addEventListener('click', function(){
-            //移除原有highlight
-            $qsa('.pwe-highlight-push').forEach(highlight => {
-                highlight.classList.remove('pwe-highlight-push');
+        $qsa('.push').forEach(push => {
+            const userid = $qs('.push-userid', push).innerHTML; //此則推文id
+    
+            push.addEventListener('click', function(){
+                toggleHl(userid);
             });
-
-            //假如點選的id是目前選擇的id，就取消選取
-            if (selectedUserid === userid) {
-                selectedUserid = null;
-                return;
-            }
-
-            //新增highlight
-            $qsa('.pwe-userid-'+userid).forEach(userid => {
-                userid.parentElement.classList.add('pwe-highlight-push');
-            });
-            selectedUserid = userid; //更新目前選擇的id
         });
-    });
-};
+    };
+
+    //將userid的推文加上高亮度，同時會關閉其他id的高亮度
+    const setHl = function(userid){
+        if (!active) return false;
+
+        //已經是目前高亮度的id，不用做事
+        if (userid == selectedUserid) return;
+
+        //移除目前的高亮度
+        removeHl();
+
+        //新增高亮度
+        $qsa('.pwe-userid-'+userid).forEach(userid => {
+            userid.parentElement.classList.add('pwe-highlight-push');
+        });
+
+        //更新目前選擇的id
+        selectedUserid = userid;
+    };
+
+    //移除原有高亮度
+    const removeHl = function(){
+        if (!active) return false;
+
+        //移除高亮度
+        $qsa('.pwe-highlight-push').forEach(highlight => {
+            highlight.classList.remove('pwe-highlight-push');
+        });
+
+        //更新目前選擇的id
+        selectedUserid = null;
+    };
+
+    //切換某id的高亮度狀態。開啟一個id的高亮度會關閉其他id的高亮度。
+    const toggleHl = function(userid){
+        if (!active) return false;
+
+        if (selectedUserid === userid) {
+            //假如點選的id是目前高亮度的id，就取消高亮度
+            removeHl();
+        } else {
+            //假如點選的id不是目前高亮度的id，就加上高亮度
+            setHl(userid);
+        }
+    };
+
+    return { on, setHl, removeHl, toggleHl };
+})();
 
 //放大圖片
 const resizeImage = function(){
