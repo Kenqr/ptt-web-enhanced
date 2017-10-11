@@ -8,6 +8,11 @@
     cursor: pointer;
 }
 
+/* 高亮度指到的推文 */
+.push:hover {
+    background-color: navy;
+}
+
 /* 作者的推文使用較明顯的箭頭 */
 .push-tag.pwe-poster-push-tag {
     position: relative;
