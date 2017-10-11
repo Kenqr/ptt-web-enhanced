@@ -404,6 +404,9 @@ const highlightPosterUserid = function(){
             pushTag.classList.add('pwe-poster-push-tag');
         });
     }
+
+    //把文章作者的推文加上高亮度
+    highlightPush.setHl(posterUserid);
 };
 
 init();
