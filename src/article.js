@@ -70,10 +70,30 @@ const showFloor = function(){
     });
 };
 
-//指到推文顯示樓層
+//指到推文顯示樓層、第幾推/噓/箭頭
 const pushTitleFloor = function(){
+    const pushCount = {
+        good: 0,
+        bad: 0,
+        normal: 0,
+    };
+
     $qsa('.push').forEach((push, index) => {
-        push.title = `${index+1}樓`;
+        const pushTagText = $qs('.push-tag', push).innerHTML;
+
+        push.title = `${index+1}樓，`;
+        if (pushTagText == '推 ') {
+            pushCount.good++;
+            push.title = push.title + `第${pushCount.good}推`;
+        }
+        if (pushTagText == '噓 ') {
+            pushCount.bad++;
+            push.title = push.title + `第${pushCount.bad}噓`;
+        }
+        if (pushTagText == '→ ') {
+            pushCount.normal++;
+            push.title = push.title + `第${pushCount.normal}箭頭`;
+        }
     });
 };
 
