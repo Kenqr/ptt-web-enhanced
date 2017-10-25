@@ -96,3 +96,8 @@
     background-color: lightblue;
     box-shadow: 0 0 20px white;
 }
+
+/* 文章右上角板名 */
+.pwe-board {
+    text-decoration: none;
+}

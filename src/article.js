@@ -26,6 +26,8 @@ const init = async function(){
     if(settings.navbarAutohide) navbarAutohide();
 
     if(settings.detectThread) detectThread();
+
+    boardNameLink();
 };
 
 //顯示通知訊息
@@ -436,6 +438,30 @@ const highlightPosterUserid = function(){
 
     //把文章作者的推文加上高亮度
     highlightPush.setHl(posterUserid);
+};
+
+//文章右上角的板名增加連到看板的連結
+const boardNameLink = function(){
+    //因為文章格式可能被作者修改，所以會做各種檢查
+
+    const articleMetalineRight = $qs('.article-metaline-right');
+    if (!articleMetalineRight) return;
+
+    const articleMetaTag = $qs('.article-meta-tag', articleMetalineRight);
+    if (!articleMetaTag || articleMetaTag.innerHTML.trim() != '看板') return;
+    
+    const articleMetaValue = $qs('.article-meta-value', articleMetalineRight);
+    if (!articleMetaValue) return;
+
+    const board = articleMetaValue.innerHTML.trim();
+    if (!board.match(/[\w-]+/)) return;
+
+    const anchor = document.createElement('a');
+    anchor.href = `/bbs/${board}/index.html`;
+    anchor.textContent = board;
+    anchor.classList.add('pwe-board');
+    articleMetaValue.innerHTML = '';
+    articleMetaValue.appendChild(anchor);
 };
 
 init();
