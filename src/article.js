@@ -79,8 +79,8 @@ const markPushSections = (function(){
             return sectionCount;
         }
         // 初始化 regular expressions
-        // PTT ID: 大小寫英數字不含底線，最少 4 個字元
-        const pttIdRegex = /[a-zA-Z0-9]{4,}/;
+        // PTT ID: 大小寫英數字不含底線，最少 4 個字元（早期為 2 個字元）
+        const pttIdRegex = /[a-zA-Z0-9]{2,}/;
         // 發信站 BBS 名稱
         const bbsNameRegex = /批踢踢實業坊/;
         // 發信站主機名稱（早期文章的主機名稱不是「ptt.cc」）
