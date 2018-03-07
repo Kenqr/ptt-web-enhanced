@@ -60,43 +60,135 @@ const processPushUserid = function(){
     });
 };
 
+// 將所有推文分區並進行標記
+const markPushSections = (function(){
+    const concatRegExps = function(regExps, flags = undefined){
+        // 傳回所有 regular expressions 連接起來的版本
+        return new RegExp(
+            regExps.reduce((regexStr, regex) => {
+                return regexStr + regex.source;
+            }, ''), flags
+        );
+    };
+    // 總推文區塊數
+    let sectionCount = null;
+    const markPushSectionsImpl = function(){
+        // 以推文起始行、轉錄起始行作為分隔來劃分推文區塊，並傳回總推文區塊數。
+        // 這個標記只需要做一次，若 sectionCount 已經設置則表示已經標記過了，直接傳回總區塊數。
+        if (sectionCount !== null) {
+            return sectionCount;
+        }
+        // 初始化 regular expressions
+        // PTT ID: 大小寫英數字不含底線，最少 4 個字元（早期為 2 個字元）
+        const pttIdRegex = /[a-zA-Z0-9]{2,}/;
+        // 發信站 BBS 名稱
+        const bbsNameRegex = /批踢踢實業坊/;
+        // 發信站主機名稱（早期文章的主機名稱不是「ptt.cc」）
+        const hostNameRegex = /[\w\.]+/;
+        // IP（IPv4）
+        const ipRegex = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
+        // 日期與時間（mm/dd/yyyy HH:MM:SS）
+        const datetimeRegex = /\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}/;
+        // ※ 發信站: BBSName(HostName)...
+        const signatureRegex = concatRegExps([/^※ 發信站: /, bbsNameRegex, /\(/, hostNameRegex, /\)(.+)?\n$/]);
+        // 現行的「來自」（接在發信站後面）
+        const modernFromRegex = concatRegExps([/^, 來自: /, ipRegex, /$/]);
+        // 舊文的「來自」（在發信站下一行）
+        const legacyFromRegex = concatRegExps([/^◆ From: /, hostNameRegex, /\n$/]);
+        // ※ 轉錄者: PttID (IP), mm/dd/yyyy HH:MM:SS
+        const forwardSigRegex = concatRegExps([/^※ 轉錄者: /, pttIdRegex, / \(/, ipRegex, /\), /, datetimeRegex, /\n$/]);
+        // ※ 文章網址: https://www.ptt.cc/bbs/{BoardName}/{ArticleID}.html
+        const articleUrlRegex = /^※ 文章網址: https:\/\/www\.ptt\.cc\/bbs\/[a-zA-Z0-9_-]+\/[MG]\.\d+\.A\.[0-9A-F]{3}\.html\n$/;
+        // 搜尋並記錄各區塊分割點
+        let cutPoints = [];
+        $qsa('#main-content > span.f2').forEach((line) => {
+            let isCutPoint = false;
+            const match = signatureRegex.exec(line.textContent);
+            if (match) {
+                // 該行為「發信站」
+                const nextSiblingText = (line.nextSibling && line.nextSibling.textContent) || '';
+                if (modernFromRegex.test(match[1]) && articleUrlRegex.test(nextSiblingText)) {
+                    // 該行為「發信站（含來自）」且次行是「文章網址」
+                    isCutPoint = true;
+                } else if (legacyFromRegex.test(nextSiblingText) || forwardSigRegex.test(nextSiblingText)) {
+                    // 該行為「發信站（不含來自）」且次行為舊文的「來自」或「轉錄者」
+                    isCutPoint = true;
+                }
+            }
+            if (isCutPoint) {
+                // 記錄區塊分割點
+                cutPoints.push(line);
+            }
+        });
+        // 為每個推文區塊的推文加入對應的 class
+        // 由文章尾部開始以避免重複標示
+        const unmarkedPushSelector = '.push:not([class|="pwe-push-section-"]):not([class*=" pwe-push-section-"])';
+        let sectionIndex = cutPoints.length;
+        for (; sectionIndex > 0; --sectionIndex) {
+            // 以 pwe-push-section-N 標示不同區塊的推文（1~N）
+            const sectionClass = `pwe-push-section-${sectionIndex}`;
+            const sectionStart = cutPoints[sectionIndex - 1];
+            sectionStart.classList.add('pwe-push-section-start');
+            $qsa(`.pwe-push-section-start ~ ${unmarkedPushSelector}`).forEach((push) => {
+                push.classList.add(sectionClass);
+            });
+            sectionStart.classList.remove('pwe-push-section-start');
+        }
+        // 為了處理上的一致性，將其餘沒有被分配到區塊的推文標示為 pwe-push-section-0
+        const sectionClass = `pwe-push-section-${sectionIndex}`;
+        $qsa(unmarkedPushSelector).forEach((push) => {
+            push.classList.add(sectionClass);
+        });
+        // 記錄並傳回總推文區塊數
+        sectionCount = 1 + cutPoints.length;
+        return sectionCount;
+    };
+    return markPushSectionsImpl;
+})();
+
 //顯示樓層
 const showFloor = function(){
-    $qsa('.push').forEach((push, index) => {
-        const floor = document.createElement('span');
-        floor.classList.add('pwe-floor');
-        if((index+1) % 5 == 0) floor.classList.add('pwe-floor-multiple-5'); //5的倍數樓層
-        const textnode = document.createTextNode(`${index+1}樓`);
-        floor.appendChild(textnode);
-        push.insertBefore(floor, push.childNodes[0]);
-    });
+    const pushSectionCount = markPushSections();
+    for (let sectionIndex = 0; sectionIndex < pushSectionCount; ++sectionIndex) {
+        $qsa(`.push.pwe-push-section-${sectionIndex}`).forEach((push, index) => {
+            const floor = document.createElement('span');
+            floor.classList.add('pwe-floor');
+            if((index+1) % 5 == 0) floor.classList.add('pwe-floor-multiple-5'); //5的倍數樓層
+            const textnode = document.createTextNode(`${index+1}樓`);
+            floor.appendChild(textnode);
+            push.insertBefore(floor, push.childNodes[0]);
+        });
+    }
 };
 
 //指到推文顯示樓層、第幾推/噓/箭頭
 const pushTitleFloor = function(){
-    const pushCount = {
-        good: 0,
-        bad: 0,
-        normal: 0,
-    };
+    const pushSectionCount = markPushSections();
+    for (let sectionIndex = 0; sectionIndex < pushSectionCount; ++sectionIndex) {
+        const pushCount = {
+            good: 0,
+            bad: 0,
+            normal: 0,
+        };
 
-    $qsa('.push').forEach((push, index) => {
-        const pushTagText = $qs('.push-tag', push).innerHTML;
+        $qsa(`.push.pwe-push-section-${sectionIndex}`).forEach((push, index) => {
+            const pushTagText = $qs('.push-tag', push).innerHTML;
 
-        push.title = `${index+1}樓，`;
-        if (pushTagText == '推 ') {
-            pushCount.good++;
-            push.title = push.title + `第${pushCount.good}推`;
-        }
-        if (pushTagText == '噓 ') {
-            pushCount.bad++;
-            push.title = push.title + `第${pushCount.bad}噓`;
-        }
-        if (pushTagText == '→ ') {
-            pushCount.normal++;
-            push.title = push.title + `第${pushCount.normal}箭頭`;
-        }
-    });
+            push.title = `${index+1}樓，`;
+            if (pushTagText == '推 ') {
+                pushCount.good++;
+                push.title = push.title + `第${pushCount.good}推`;
+            }
+            if (pushTagText == '噓 ') {
+                pushCount.bad++;
+                push.title = push.title + `第${pushCount.bad}噓`;
+            }
+            if (pushTagText == '→ ') {
+                pushCount.normal++;
+                push.title = push.title + `第${pushCount.normal}箭頭`;
+            }
+        });
+    }
 };
 
 //推文統計
@@ -109,7 +201,9 @@ const countPushStatistics = function(){
     };
 
     //統計推/噓/→
-    $qsa('.push-tag').forEach(pushTag => {
+    //只統計最後區塊的推文
+    const pushSectionCount = markPushSections();
+    $qsa(`.push.pwe-push-section-${pushSectionCount - 1} .push-tag`).forEach(pushTag => {
         const pushTagText = pushTag.innerHTML;
         if (pushTagText == '推 ') pushCount.good++;
         if (pushTagText == '噓 ') pushCount.bad++;
