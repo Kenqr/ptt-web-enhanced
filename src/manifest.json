@@ -23,6 +23,18 @@
 
     "content_scripts": [
         {
+            "matches": [
+                "https://www.ptt.cc/bbs/*/index*.html",
+                "https://www.ptt.cc/bbs/*/search?*"
+            ],
+            "js": [
+                "utils/settings.js",
+                "utils/helpers.js",
+                "board.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
             "matches": ["https://www.ptt.cc/bbs/*/M.*.html"],
             "js": [
                 "utils/settings.js",
