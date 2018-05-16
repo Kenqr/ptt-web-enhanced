@@ -51,3 +51,13 @@ const $create = function $create(json) {
 
     return elem;
 };
+
+const pwe = {};
+
+//找出網址中的板名
+pwe.boardName = (function(){
+    const re = /\/bbs\/([\w-]+)\/.+/;
+    const match = window.location.href.match(re);
+    if (!match) return null;
+    return match[1];
+})();

@@ -1,0 +1,29 @@
+/* 下拉選單 */
+.pwe-menu {
+    position: relative;
+    cursor: pointer;
+}
+.pwe-menu__trigger:hover {
+    color: #333;
+    background-color: #ccc;
+}
+.pwe-menu__dropdown {
+    position: absolute;
+    background-color: #444;
+    z-index: 90;
+    display: none;
+    white-space: nowrap;
+}
+.pwe-menu__trigger:focus + .pwe-menu__dropdown,
+.pwe-menu__dropdown:hover {
+    display: block;
+}
+.pwe-menu__anchor {
+    display: block;
+    padding: 1ex;
+    color: #aaa;
+    text-decoration: none;
+}
+.pwe-menu__anchor:hover {
+    color: #000;
+}
