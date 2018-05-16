@@ -32,6 +32,10 @@
                 "utils/helpers.js",
                 "board.js"
             ],
+            "css": [
+                "shared.css",
+                "board.css"
+            ],
             "run_at": "document_end"
         },
         {
@@ -41,7 +45,10 @@
                 "utils/helpers.js",
                 "article.js"
             ],
-            "css": ["article.css"],
+            "css": [
+                "shared.css",
+                "article.css"
+            ],
             "run_at": "document_end"
         },
         {
