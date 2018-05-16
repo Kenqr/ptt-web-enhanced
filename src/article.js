@@ -52,7 +52,7 @@ const notify = (() => {
     };
 })();
 
-//幫所有推文id加上class，方便後續select
+//幫所有推文id加上data-userid，方便後續select
 const processPushUserid = function(){
     $qsa('.push-userid').forEach(pushUserid => {
         const userid = pushUserid.innerHTML.trim(); //此則推文id
