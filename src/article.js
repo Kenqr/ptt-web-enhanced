@@ -17,6 +17,8 @@ const init = async function(){
 
     highlightPush.on();
 
+    pushUserMenu();
+
     if(settings.highlightPosterUserid) highlightPosterUserid();
 
     if(settings.resizeImage) resizeImage();
@@ -283,6 +285,42 @@ const highlightPush = (function(){
 
     return { on, setHl, removeHl, toggleHl };
 })();
+
+//幫推文ID加上搜尋選單
+const pushUserMenu = function(){
+    //取得板名
+    const board = pwe.boardName;
+
+    $qsa('.push-userid').forEach(pushUserid => {
+        //作者 ID
+        const userid = pushUserid.textContent;
+
+        //建立選單
+        pushUserid.classList.add('pwe-menu');
+        pushUserid.innerHTML = (`
+            <span class="pwe-menu__trigger" tabindex>${userid}</span>
+            <div class="pwe-menu__dropdown">
+                <div>
+                    <a href="/bbs/${board}/search?q=author:${userid}" class="pwe-menu__anchor">
+                        搜尋看板內 ${userid} 的文章
+                    </a>
+                </div>
+                <div>
+                    <a href="/bbs/ALLPOST/search?q=author:${userid}" class="pwe-menu__anchor">
+                        搜尋 ALLPOST 板 ${userid} 的文章
+                    </a>
+                </div>
+                <div>
+                    <a href="https://www.google.com/search?q=site%3Aptt.cc%20${userid}"
+                        target="_blank" class="pwe-menu__anchor"
+                    >
+                        Google 搜尋 ${userid}
+                    </a>
+                </div>
+            </div>
+        `).split('\n').map(line => line.trim()).join(''); //去除每行前後空白並接成一行
+    });
+};
 
 //放大圖片
 const resizeImage = function(){
