@@ -23,6 +23,7 @@
     padding: 1ex;
     color: #aaa;
     text-decoration: none;
+    line-height: 1em;
 }
 .pwe-menu__anchor:hover {
     color: #000;

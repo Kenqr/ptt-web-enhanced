@@ -29,6 +29,11 @@
     background-color: rgb(50, 50, 50);
 }
 
+/* 推文ID搜尋選單 */
+.push-userid .pwe-menu__dropdown {
+    font-size: 20px;
+}
+
 /* 推文樓層 */
 .push .pwe-floor {
     position: absolute;
