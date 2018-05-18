@@ -50,17 +50,6 @@
                 "article.css"
             ],
             "run_at": "document_end"
-        },
-        {
-            "matches": [
-                "https://www.ptt.cc/bbs/ALLPOST/index.html",
-                "https://www.ptt.cc/bbs/ALLPOST/index*.html"
-            ],
-            "js": [
-                "utils/helpers.js",
-                "allpost-link-fix.js"
-            ],
-            "run_at": "document_end"
         }
     ],
 
