@@ -27,6 +27,8 @@ const init = async function(){
 
     if(settings.navbarAutohide) navbarAutohide();
 
+    threadList();
+
     if(settings.detectThread) detectThread();
 
     boardNameLink();
@@ -357,6 +359,36 @@ const clickToDownloadImage = function(){
 const navbarAutohide = function(){
     $qs('#topbar-container').classList.add('pwe-autohide');
     $qs('#navigation-container').classList.add('pwe-autohide');
+};
+
+//顯示討論串
+const threadList = async function(){
+    console.log('PWE: threadList');
+
+    const fetchDocument = function(url){
+        return fetch(url, {credentials: 'include'}).then(response => {
+            return response.text();
+        }).then(text => {
+            return new DOMParser().parseFromString(text, 'text/html');
+        });
+    };
+
+    //TODO 取得目前討論串標題
+    const thread = '[ＸＤ]男童公車上調皮出腳踢乘客 被重摔在地狠踩';
+    const url = new URL(`/bbs/C_Chat/search?q=thread%3A${thread}`, location.origin);
+
+    //TODO 處理多頁的情況
+    const threadHtml = await fetchDocument(url);
+    const threadItems = $qsa('.r-ent', threadHtml);
+    const threadArticleListElem = document.createElement('div');
+    threadArticleListElem.classList.add('bbs-screen');
+    for (threadItem of threadItems) {
+        threadArticleListElem.append(threadItem);
+    }
+    $qs('#main-container').insertBefore(threadArticleListElem, $qs('.main-container'));
+    //TODO 找出本篇
+    //TODO 顯示標題
+
 };
 
 //自動連結討論串
