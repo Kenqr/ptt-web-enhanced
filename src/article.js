@@ -7,6 +7,8 @@ const init = async function(){
     if ($qs('html.pwe')) { window.location.reload(); }
     $qs('html').classList.add('pwe');
 
+    showArticleTitle();
+
     processPushUserid();
 
     if(settings.showFloor) showFloor();
@@ -53,6 +55,38 @@ const notify = (() => {
         }, 5000);
     };
 })();
+
+//上方導覽列顯示文章標題
+const showArticleTitle = function(){
+    //由文章標題取得討論串標題
+    const getArticleTitleToken = function(title){
+        /^(?:Re: ?)*(.*)$/i.test(title);
+        return RegExp.$1;
+    };
+
+    //上方導覽列，以及第一個靠右的元素
+    const topbar = $qs('#topbar');
+    const rightItem = $qs('#topbar a.right');
+
+    //箭頭
+    const arrow = $create(['span', {}, '›']);
+
+    //取得文章標題
+    const metaTitle = $qs('head meta[property="og:title"]');
+    const articleTitle = metaTitle.getAttribute('content'); //文章標題
+    const threadTitle = getArticleTitleToken(articleTitle); //討論串標題
+
+    //建立搜尋討論串的連結
+    const threadLink = $create(
+        ['a', {href: `/bbs/${pwe.boardName}/search?q=thread%3A${threadTitle}`},
+            articleTitle,
+        ]
+    );
+
+    //將箭頭和討論串連結加進上方導覽列
+    topbar.insertBefore(arrow, rightItem);
+    topbar.insertBefore(threadLink, rightItem);
+};
 
 //幫所有推文id加上data-userid，方便後續select
 const processPushUserid = function(){
