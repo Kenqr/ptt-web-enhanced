@@ -7,6 +7,9 @@
     color: #333;
     background-color: #ccc;
 }
+.pwe-menu__trigger--arrow::after {
+    content: '▾';
+}
 .pwe-menu__dropdown {
     position: absolute;
     background-color: #444;

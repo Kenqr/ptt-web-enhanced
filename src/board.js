@@ -24,10 +24,10 @@ const authorMenu = function(){
         authorElem.appendChild($create(
             ['div',
                 {
-                    'class': 'pwe-menu__trigger',
+                    'class': 'pwe-menu__trigger pwe-menu__trigger--arrow',
                     'tabindex': '',
                 },
-                `${author}▾`
+                author
             ]
         ));
 
