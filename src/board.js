@@ -81,4 +81,7 @@ const fixAllpostLink = function(){
     });
 };
 
-init();
+//執行並捕捉可能的錯誤輸出到 console，方便除錯
+init().catch(error => {
+    console.error('PWE:', error);
+});
