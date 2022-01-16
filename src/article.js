@@ -338,7 +338,7 @@ const pushUserMenu = function(){
             ['span',
                 {
                     'class': 'pwe-menu__trigger',
-                    tabindex: '0',
+                    tabindex: '-1',
                 },
                 userid,
             ]

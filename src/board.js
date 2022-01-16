@@ -23,7 +23,7 @@ const authorMenu = function(){
             ['div',
                 {
                     'class': 'pwe-menu__trigger pwe-menu__trigger--arrow',
-                    tabindex: '0',
+                    'tabindex': '-1',
                 },
                 author
             ]
