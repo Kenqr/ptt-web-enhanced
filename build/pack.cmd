@@ -20,4 +20,9 @@ set "fn=%filename%.xpi"
 del "%dist%\%fn%"
 "%compressor%" a -tzip -mx9 "%dist%\%fn%" "%src%\"*.* -r -x!.git*
 
+:: Chrome extension package (for submit)
+set "fn=%filename%.zip"
+del "%dist%\%fn%"
+"%compressor%" a -tzip -mx9 "%dist%\%fn%" "%src%\"*.* -r -x!.git*
+
 pause

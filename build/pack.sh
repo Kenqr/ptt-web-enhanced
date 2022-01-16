@@ -17,3 +17,8 @@ cd "$src"
 fn="$filename.xpi" &&
 rm "$dist/$fn" &&
 zip -r "$dist/$fn" * -x '.git*'
+
+# Chrome extension package (for submit)
+fn="$filename.zip" &&
+rm -f "$dist/$fn" &&
+zip -r "$dist/$fn" * -x '.git*'
