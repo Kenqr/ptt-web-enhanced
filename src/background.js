@@ -4,8 +4,7 @@ const pweDownloads = new Map();
 browser.runtime.onMessage.addListener(function(message, sender, sendResponse){
     const url = message.url;
     return browser.downloads.download({
-        url,
-        saveAs: true
+        url
     }).then(function(id){
         return new Promise((resolve, reject) => {
             const cb = async (downloadDelta) => {
