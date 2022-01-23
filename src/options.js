@@ -4,7 +4,7 @@ const init = async function(){
     loadSettings();
 
     //修改時自動寫入
-    $qsa('[data-option-type="boolean"]').forEach(option => {
+    $qsa('input[type="checkbox"]').forEach(option => {
         option.addEventListener('change', function(event){
             pweSettings.set(event.target.name, event.target.checked);
         });
@@ -18,8 +18,8 @@ const init = async function(){
 const loadSettings = async function(){
     const values = await pweSettings.getAll();
     
-    //載入boolean設定
-    $qsa('[data-option-type="boolean"]').forEach(option => {
+    //載入設定
+    $qsa('input[type="checkbox"]').forEach(option => {
         option.checked = values[option.name];
     });
 };
