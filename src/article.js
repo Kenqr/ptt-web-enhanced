@@ -400,6 +400,7 @@ const clickToDownloadImage = function(){
             browser.runtime.sendMessage({
                 url: img.src
             }).then(function(filename){
+                if (!filename) { return; }
                 //顯示下載完成訊息
                 notify(`圖片已下載至${filename}`);
             });
