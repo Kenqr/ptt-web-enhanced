@@ -28,7 +28,7 @@ const init = async function(){
 
     if(settings.navbarAutohide) navbarAutohide();
 
-    if(settings.detectThread) detectThread();
+    if(settings.detectThread) detectThread(settings.detectThreadRange);
 
     boardNameLink();
 };
@@ -415,7 +415,7 @@ const navbarAutohide = function(){
 };
 
 //自動連結討論串
-const detectThread = async function() {
+const detectThread = async function(range) {
     const getArticleId = function(url){
         /\/\w\.(\d+)\.[\w.]+$/.test(url.pathname);
         return RegExp.$1;
@@ -521,7 +521,7 @@ const detectThread = async function() {
 
         let prev = articles.slice(0, articleIndex).find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
         if (prev) { return prev; }
-        let page = articlePage, pageMin = Math.max(page - 4, firstPage);
+        let page = articlePage, pageMin = Math.max(page - range, firstPage);
         return searchNext();
     };
 
@@ -536,7 +536,7 @@ const detectThread = async function() {
 
         let next = articles.slice(articleIndex + 1).find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
         if (next) { return next; }
-        let page = articlePage, pageMax = Math.min(page + 4, lastPage);
+        let page = articlePage, pageMax = Math.min(page + range, lastPage);
         return searchNext();
     };
 

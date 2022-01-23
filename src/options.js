@@ -9,6 +9,13 @@ const init = async function(){
             pweSettings.set(event.target.name, event.target.checked);
         });
     });
+    $qsa('input[type="number"]').forEach(option => {
+        option.addEventListener('change', function(event){
+            if (event.target.validity.valid) {
+              pweSettings.set(event.target.name, event.target.valueAsNumber);
+            }
+        });
+    });
 
     //重置設定按鈕
     $qs('#resetSettings').addEventListener('click', resetSettings);
@@ -21,6 +28,9 @@ const loadSettings = async function(){
     //載入設定
     $qsa('input[type="checkbox"]').forEach(option => {
         option.checked = values[option.name];
+    });
+    $qsa('input[type="number"]').forEach(option => {
+        option.value = values[option.name];
     });
 };
 
