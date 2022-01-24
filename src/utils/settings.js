@@ -10,6 +10,8 @@ const pweSettings = (function(){
         clickToDownloadImage: false,
         navbarAutohide: true,
         detectThread: false,
+        blacklistEnabled: true,
+        blacklist: [],
     };
 
     const init = function() {

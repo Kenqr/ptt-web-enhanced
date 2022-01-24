@@ -12,6 +12,9 @@ const init = async function(){
 
     //重置設定按鈕
     $qs('#resetSettings').addEventListener('click', resetSettings);
+
+    //黑名單設定按鈕
+    $qs('#blacklistSettings').addEventListener('click', blacklistSettings);
 };
 
 //載入設定
@@ -28,6 +31,15 @@ const loadSettings = async function(){
 const resetSettings = async function(){
     await pweSettings.reset();
     loadSettings();
+};
+
+const blacklistSettings = async function(){
+    const blacklistOld = await pweSettings.get('blacklist');
+    const valueOld = blacklistOld.join(' ');
+    const valueNew = prompt('請輸入欲列入黑名單的使用者 ID（以空白字元分隔）', valueOld);
+    if (valueNew === null || valueNew === valueOld) { return; }
+    const blacklistNew = Array.from(new Set(valueNew.match(/[a-zA-Z0-9]{2,}/g) || []));
+    await pweSettings.set('blacklist', blacklistNew);
 };
 
 document.addEventListener('DOMContentLoaded', init);

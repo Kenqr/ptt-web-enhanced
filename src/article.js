@@ -30,6 +30,8 @@ const init = async function(){
 
     if(settings.detectThread) detectThread();
 
+    if(settings.blacklistEnabled) handleBlacklist(settings.blacklist);
+
     boardNameLink();
 };
 
@@ -653,6 +655,22 @@ const boardNameLink = function(){
     anchor.classList.add('pwe-board');
     articleMetaValue.innerHTML = '';
     articleMetaValue.appendChild(anchor);
+};
+
+const handleBlacklist = function(blacklist){
+    blacklist = new Set(blacklist);
+    for (const push of $qsa('.push')) {
+        const userId = $qs('.push-userid', push).dataset.userid;
+        if (!blacklist.has(userId)) { continue; }
+        push.classList.add('pwe-blocked-push');
+
+        //標記推文內容產生的圖片或影片預覽
+        let next = push.nextElementSibling;
+        while (next && next.matches('.richcontent')) {
+            next.classList.add('pwe-blocked-push-richcontent');
+            next = next.nextElementSibling;
+        }
+    }
 };
 
 //執行並捕捉可能的錯誤輸出到 console，方便除錯

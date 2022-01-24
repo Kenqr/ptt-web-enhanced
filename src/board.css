@@ -5,3 +5,8 @@
 .author .pwe-menu__dropdown {
     left: 0;
 }
+
+/* 黑名單 */
+.pwe-blocked-article {
+    opacity: 0.1;
+}

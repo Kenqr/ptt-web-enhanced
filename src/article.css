@@ -106,3 +106,12 @@
 .pwe-board {
     text-decoration: none;
 }
+
+/* 黑名單 */
+.pwe-blocked-push {
+    opacity: 0.1;
+}
+.pwe-blocked-push-richcontent {
+    opacity: 0.1;
+    display: none;
+}
