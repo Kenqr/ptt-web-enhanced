@@ -18,7 +18,10 @@
     ],
 
     "background": {
-        "scripts": ["background.js"]
+        "scripts": [
+            "lib/browser-polyfill.js",
+            "background.js"
+        ]
     },
 
     "content_scripts": [
@@ -28,6 +31,7 @@
                 "https://www.ptt.cc/bbs/*/search?*"
             ],
             "js": [
+                "lib/browser-polyfill.js",
                 "utils/settings.js",
                 "utils/helpers.js",
                 "board.js"
@@ -41,6 +45,7 @@
         {
             "matches": ["https://www.ptt.cc/bbs/*/M.*.html"],
             "js": [
+                "lib/browser-polyfill.js",
                 "utils/settings.js",
                 "utils/helpers.js",
                 "article.js"
