@@ -72,6 +72,8 @@ const showArticleTitle = function(){
 
     //取得文章標題
     const metaTitle = $qs('head meta[property="og:title"]');
+    if (!metaTitle) { return; }
+
     const articleTitle = metaTitle.getAttribute('content'); //文章標題
     const threadTitle = getArticleTitleToken(articleTitle); //討論串標題
 
