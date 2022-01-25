@@ -60,8 +60,7 @@ const notify = (() => {
 const showArticleTitle = function(){
     //由文章標題取得討論串標題
     const getArticleTitleToken = function(title){
-        /^(?:Re: ?)*(.*)$/i.test(title);
-        return RegExp.$1;
+        return title.replace(/^(?:(?:Re|Fw): ?)*/i, '');
     };
 
     //上方導覽列，以及第一個靠右的元素
