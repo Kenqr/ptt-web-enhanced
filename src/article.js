@@ -557,8 +557,12 @@ const detectThread = function(){
     }).then(() => {
         return fetchListPageDocument().then(doc => {
             lastId = fetchArticles(doc, 'last').id;
-            /\/index(\d+)\.html$/.test($qsa('.btn-group-paging a.btn', doc)[1].href);
-            lastPage = parseInt(RegExp.$1, 10) + 1;
+            const url = $qsa('.btn-group-paging a.btn', doc)[1].href;
+            if (url && /\/index(\d+)\.html$/.test(url)) {
+              lastPage = parseInt(RegExp.$1, 10) + 1;
+            } else {
+              lastPage = 1;
+            }
         });
     }).then(() => {
         return seekArticlePage(firstPage, lastPage).then(articlePageIndex => {
