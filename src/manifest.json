@@ -61,6 +61,19 @@
                 "article.css"
             ],
             "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "https://www.ptt.cc/ask/over18",
+                "https://www.ptt.cc/ask/over18?*"
+            ],
+            "js": [
+                "lib/browser-polyfill.js",
+                "utils/settings.js",
+                "utils/helpers.js",
+                "r18.js"
+            ],
+            "run_at": "document_end"
         }
     ],
 

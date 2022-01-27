@@ -3,6 +3,7 @@ const pweSettings = (function(){
 
     let storage;
     const defaultSettings = {
+        autoR18: false,
         showFloor: true,
         countPushStatistics: true,
         highlightPosterUserid: true,
