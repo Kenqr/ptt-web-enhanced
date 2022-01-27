@@ -571,7 +571,7 @@ const detectThread = function(){
 
             // 重導向「返回看板」
             let newUrl = new URL(`index${articlePage}.html`, curUrl);
-            $qsa('a.board').forEach(elem => {
+            $qsa('a.board, a.pwe-board').forEach(elem => {
               elem.href = newUrl.pathname;
             });
 
