@@ -415,7 +415,7 @@ const navbarAutohide = function(){
 };
 
 //自動連結討論串
-const detectThread = function(){
+const detectThread = async function() {
     const getArticleId = function(url){
         /\/\w\.(\d+)\.[\w.]+$/.test(url.pathname);
         return RegExp.$1;
@@ -426,20 +426,18 @@ const detectThread = function(){
         return RegExp.$1;
     };
 
-    const fetchDocument = function(url){
-        return fetch(url, {credentials: 'include'}).then(response => {
-            return response.text();
-        }).then(text => {
-            return new DOMParser().parseFromString(text, 'text/html');
-        });
+    const fetchDocument = async function(url){
+        const response = await fetch(url, {credentials: 'include'});
+        const text = await response.text();
+        return new DOMParser().parseFromString(text, 'text/html');
     };
 
-    const fetchListPageDocument = function(index){
+    const fetchListPageDocument = async function(index){
         // index == undefined 為最後一頁
-        return fetchDocument(new URL(`index${index || ""}.html`, curUrl));
+        return await fetchDocument(new URL(`index${index || ""}.html`, curUrl));
     };
 
-    const fetchArticles = function(doc, method = 'all'){
+    const getArticles = function(doc, method = 'all'){
         var elems = $qsa('.r-list-container .r-ent .title a, .r-list-container .r-list-sep', doc);
         var sepIndex = elems.findIndex(x => x.classList.contains('r-list-sep'));
         if (sepIndex !== -1) { elems = elems.slice(0, sepIndex); }
@@ -471,139 +469,131 @@ const detectThread = function(){
         return null;
     };
 
-    const seekArticlePage = function(firstPage, lastPage){
-        var searchNext = function(){
+    const seekArticlePage = async function(firstPage, lastPage){
+        const searchNext = async function(){
             // 二分搜尋法
-            var articlePageGuess = Math.floor(firstPage + (lastPage - firstPage) / 2);
+            let articlePageGuess = Math.floor(firstPage + (lastPage - firstPage) / 2);
             if (articlePageGuess === articlePage) { articlePageGuess++; }
             articlePage = articlePageGuess;
 
-            return fetchListPageDocument(articlePageGuess).then(doc => {
-                articles = fetchArticles(doc, 'all');
-                var minId = articles[0].id;
-                var maxId = articles[articles.length - 1].id;
+            const doc = await fetchListPageDocument(articlePageGuess);
+            articles = getArticles(doc, 'all');
+            let minId = articles[0].id;
+            let maxId = articles[articles.length - 1].id;
 
-                if (articleId < minId) {
-                    if (firstPage === lastPage) {
-                        // 此 ID 的文章不存在
-                        return -1;
-                    }
-                    lastId = minId;
-                    lastPage = articlePageGuess;
-                    return searchNext();
-                } else if (articleId > maxId) {
-                    if (firstPage === lastPage) {
-                        // 此 ID 的文章不存在
-                        return -1;
-                    }
-                    firstId = maxId;
-                    firstPage = articlePageGuess;
-                    return searchNext();
-                } else {
-                    var article = articles.find(x => x.id === articleId);
-                    if (!article) {
-                        // 此 ID 的文章不存在
-                        return -1;
-                    }
-                    return articlePageGuess;
+            if (articleId < minId) {
+                if (firstPage === lastPage) {
+                    // 此 ID 的文章不存在
+                    return -1;
                 }
-            });
+                lastId = minId;
+                lastPage = articlePageGuess;
+                return searchNext();
+            } else if (articleId > maxId) {
+                if (firstPage === lastPage) {
+                    // 此 ID 的文章不存在
+                    return -1;
+                }
+                firstId = maxId;
+                firstPage = articlePageGuess;
+                return searchNext();
+            } else {
+                var article = articles.find(x => x.id === articleId);
+                if (!article) {
+                    // 此 ID 的文章不存在
+                    return -1;
+                }
+                return articlePageGuess;
+            }
         };
 
         return searchNext();
     };
 
-    const seekPrevPage = function(){
-        var searchNext = function(){
+    const seekPrevPage = async function(){
+        const searchNext = async function(){
             if (--page < pageMin) { return null; }
-            return fetchListPageDocument(page).then(doc => {
-                let prev = fetchArticles(doc, 'all').reverse().find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
-                if (prev) { return prev; }
-                return searchNext();
-            });
+            const doc = await fetchListPageDocument(page)
+            let prev = getArticles(doc, 'all').reverse().find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
+            if (prev) { return prev; }
+            return searchNext();
         };
 
         let prev = articles.slice(0, articleIndex).find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
-        if (prev) { return Promise.resolve(prev); }
+        if (prev) { return prev; }
         let page = articlePage, pageMin = Math.max(page - 4, firstPage);
         return searchNext();
     };
 
-    const seekNextPage = function(){
-        var searchNext = function(){
+    const seekNextPage = async function(){
+        const searchNext = async function(){
             if (++page > pageMax) { return null; }
-            return fetchListPageDocument(page).then(doc => {
-                let next = fetchArticles(doc, 'all').find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
-                if (next) { return next; }
-                return searchNext();
-            });
+            const doc = await fetchListPageDocument(page)
+            let next = getArticles(doc, 'all').find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
+            if (next) { return next; }
+            return searchNext();
         };
 
         let next = articles.slice(articleIndex + 1).find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
-        if (next) { return Promise.resolve(next); }
+        if (next) { return next; }
         let page = articlePage, pageMax = Math.min(page + 4, lastPage);
         return searchNext();
     };
 
-    var curUrl = new URL(location.href);
-    var articles,
+    const curUrl = new URL(location.href);
+    let articles,
         articleId = getArticleId(curUrl), articlePage = -1, article, articleIndex,
         firstId, firstPage = 1,
         lastId, lastPage;
 
-    return Promise.resolve().then(() => {
-        return fetchListPageDocument(1).then(doc => {
-            firstId = fetchArticles(doc, 'first').id;
-        });
-    }).then(() => {
-        return fetchListPageDocument().then(doc => {
-            lastId = fetchArticles(doc, 'last').id;
-            const url = $qsa('.btn-group-paging a.btn', doc)[1].href;
-            if (url && /\/index(\d+)\.html$/.test(url)) {
-              lastPage = parseInt(RegExp.$1, 10) + 1;
-            } else {
-              lastPage = 1;
-            }
-        });
-    }).then(() => {
-        return seekArticlePage(firstPage, lastPage).then(articlePageIndex => {
-            articlePage = articlePageIndex;
-            if (articlePage === -1) { throw new Error(`'${curUrl}' 頁面不存在`); }
+    try {
+        const firstDoc = await fetchListPageDocument(1);
+        firstId = getArticles(firstDoc, 'first').id;
 
-            // 重導向「返回看板」
-            let newUrl = new URL(`index${articlePage}.html`, curUrl);
-            $qsa('a.board, a.pwe-board').forEach(elem => {
-              elem.href = newUrl.pathname;
-            });
+        const lastDoc = await fetchListPageDocument();
+        lastId = getArticles(lastDoc, 'last').id;
+        const url = $qsa('.btn-group-paging a.btn', lastDoc)[1].href;
+        if (url && /\/index(\d+)\.html$/.test(url)) {
+          lastPage = parseInt(RegExp.$1, 10) + 1;
+        } else {
+          lastPage = 1;
+        }
 
-            articleIndex = articles.findIndex(x => x.id === articleId);
-            article = articles[articleIndex];
-        });
-    }).then(() => {
-        return Promise.all([seekPrevPage(), seekNextPage()]).then(([prevPage, nextPage]) => {
-            if (prevPage) {
-                var prevPageElem = document.createElement('a');
-                prevPageElem.href = prevPage.href;
-            } else {
-                var prevPageElem = document.createElement('del');
-            }
-            prevPageElem.classList.add('pwe-thread');
-            prevPageElem.textContent = '上一篇';
-            $qs('#navigation').insertBefore(prevPageElem, $qs('#navigation .bar'));
+        articlePage = await seekArticlePage(firstPage, lastPage);
+        if (articlePage === -1) { throw new Error(`'${curUrl}' 頁面不存在`); }
 
-            if (nextPage) {
-                var nextPageElem = document.createElement('a');
-                nextPageElem.href = nextPage.href;
-            } else {
-                var nextPageElem = document.createElement('del');
-            }
-            nextPageElem.classList.add('pwe-thread');
-            nextPageElem.textContent = '下一篇';
-            $qs('#navigation').insertBefore(nextPageElem, $qs('#navigation .bar'));
-        });
-    }).catch(ex => {
-      console.error(ex);
-    });
+        // 重導向「返回看板」
+        const newUrl = new URL(`index${articlePage}.html`, curUrl);
+        for (const elem of $qsa('a.board, a.pwe-board')) {
+          elem.href = newUrl.pathname;
+        }
+
+        articleIndex = articles.findIndex(x => x.id === articleId);
+        article = articles[articleIndex];
+
+        const [prevPage, nextPage] = await Promise.all([seekPrevPage(), seekNextPage()]);
+        if (prevPage) {
+            var prevPageElem = document.createElement('a');
+            prevPageElem.href = prevPage.href;
+        } else {
+            var prevPageElem = document.createElement('del');
+        }
+        prevPageElem.classList.add('pwe-thread');
+        prevPageElem.textContent = '上一篇';
+        $qs('#navigation').insertBefore(prevPageElem, $qs('#navigation .bar'));
+
+        if (nextPage) {
+            var nextPageElem = document.createElement('a');
+            nextPageElem.href = nextPage.href;
+        } else {
+            var nextPageElem = document.createElement('del');
+        }
+        nextPageElem.classList.add('pwe-thread');
+        nextPageElem.textContent = '下一篇';
+        $qs('#navigation').insertBefore(nextPageElem, $qs('#navigation .bar'));
+    } catch (ex) {
+        console.error(ex);
+    }
 };
 
 //作者的推文使用較明顯的箭頭
