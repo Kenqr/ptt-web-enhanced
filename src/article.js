@@ -28,7 +28,11 @@ const init = async function(){
 
     if(settings.navbarAutohide) navbarAutohide();
 
-    if(settings.detectThread) detectThread(settings.detectThreadRange);
+    if(settings.detectThread) detectThread({
+        range: settings.detectThreadRange,
+        cacheEnabled: settings.detectThreadCacheEnabled,
+        cacheExpire: settings.detectThreadCacheExpire,
+    });
 
     boardNameLink();
 };
@@ -415,7 +419,10 @@ const navbarAutohide = function(){
 };
 
 //自動連結討論串
-const detectThread = async function(range) {
+const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
+    const CACHE_KEY = 'ptt-web-enhanced-v1';
+    const now = Date.now();
+
     const getArticleId = function(url){
         /\/\w\.(\d+)\.[\w.]+$/.test(url.pathname);
         return RegExp.$1;
@@ -426,8 +433,41 @@ const detectThread = async function(range) {
         return RegExp.$1;
     };
 
+    const fetchWithCache = async function(url, options = {credentials: 'include'}){
+        // For Firefox, content.fetch should be used to mimic a request from the page script;
+        // For Chromium, fetch behaves as from the page script
+        const fetchFunc = window.content && window.content.fetch || fetch;
+
+        const request = new Request(url, options);
+
+        if (cacheEnabled) {
+            try {
+                // read from cache if available and not expired
+                const cache = await caches.open(CACHE_KEY);
+                let response = await cache.match(request);
+                if (response && (now - new Date(response.headers.get('Date')).valueOf()) < cacheExpire) {
+                    return response;
+                }
+
+                // fetch content, save to cache if the response is OK
+                response = await fetchFunc(request);
+                if (response.ok) { await cache.put(request, response.clone()); }
+                return response;
+            } catch (ex) {
+                // For Firefox, cache related API throws a SecurityError when called in a private window.
+                // Cache it and do nothing to fallback; otherwise re-throw the unexpected error.
+                if (ex.name !== 'SecurityError') {
+                    throw ex;
+                }
+            }
+        }
+
+        // fallback to a normal fetch
+        return await fetchFunc(request);
+    };
+
     const fetchDocument = async function(url){
-        const response = await fetch(url, {credentials: 'include'});
+        const response = await fetchWithCache(url);
         const text = await response.text();
         return new DOMParser().parseFromString(text, 'text/html');
     };

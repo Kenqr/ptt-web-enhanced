@@ -11,6 +11,8 @@ const pweSettings = (function(){
         navbarAutohide: true,
         detectThread: false,
         detectThreadRange: 4,
+        detectThreadCacheEnabled: true,
+        detectThreadCacheExpire: 10 * 60 * 1000,
     };
 
     const init = function() {
