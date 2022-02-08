@@ -519,7 +519,7 @@ const detectThread = async function() {
             return searchNext();
         };
 
-        let prev = articles.slice(0, articleIndex).find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
+        let prev = articles.slice(0, articleIndex).reverse().find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
         if (prev) { return prev; }
         let page = articlePage, pageMin = Math.max(page - 4, firstPage);
         return searchNext();
