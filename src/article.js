@@ -338,7 +338,7 @@ const pushUserMenu = function(){
             ['span',
                 {
                     'class': 'pwe-menu__trigger',
-                    tabindex: '-1',
+                    'tabindex': '-1',
                 },
                 userid,
             ]
@@ -350,25 +350,25 @@ const pushUserMenu = function(){
                 ['div', {},
                     ['a',
                         {
-                            href: `/bbs/${board}/search?q=author:${userid}`,
+                            'href': `/bbs/${board}/search?q=author:${userid}`,
                             'class': 'pwe-menu__anchor',
                         },
                         `搜尋看板內 ${userid} 的文章`,
                     ],
                     ['a',
                         {
-                            href: `/bbs/ALLPOST/search?q=author:${userid}`,
+                            'href': `/bbs/ALLPOST/search?q=author:${userid}`,
                             'class': 'pwe-menu__anchor',
                         },
                         `搜尋 ALLPOST 板 ${userid} 的文章`,
                     ],
                     ['a',
                         {
-                            href: `https://www.google.com/search?q=site%3Aptt.cc%20${userid}`,
-                            target: '_blank',
+                            'href': `https://www.google.com/search?q=${userid}+site:ptt.cc`,
+                            'target': '_blank',
                             'class': 'pwe-menu__anchor',
                         },
-                        `Google 搜尋 ${userid}`,
+                        `Google 站內搜尋 ${userid}`,
                     ],
                 ]
             ]
