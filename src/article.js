@@ -59,8 +59,7 @@ const notify = (() => {
 const showArticleTitle = function(){
     //由文章標題取得討論串標題
     const getArticleTitleToken = function(title){
-        /^(?:Re: ?)*(.*)$/i.test(title);
-        return RegExp.$1;
+        return title.replace(/^(?:(?:Re|Fw): ?)*/i, '');
     };
 
     //上方導覽列，以及第一個靠右的元素
@@ -72,6 +71,8 @@ const showArticleTitle = function(){
 
     //取得文章標題
     const metaTitle = $qs('head meta[property="og:title"]');
+    if (!metaTitle) { return; }
+
     const articleTitle = metaTitle.getAttribute('content'); //文章標題
     const threadTitle = getArticleTitleToken(articleTitle); //討論串標題
 
