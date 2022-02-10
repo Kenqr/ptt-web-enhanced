@@ -3,6 +3,7 @@ const pweSettings = (function(){
 
     let storage;
     const defaultSettings = {
+        autoR18: false,
         showFloor: true,
         countPushStatistics: true,
         highlightPosterUserid: true,
@@ -13,6 +14,8 @@ const pweSettings = (function(){
         detectThreadRange: 4,
         detectThreadCacheEnabled: true,
         detectThreadCacheExpire: 10 * 60 * 1000,
+        blacklistEnabled: true,
+        blacklist: [],
     };
 
     const init = function() {

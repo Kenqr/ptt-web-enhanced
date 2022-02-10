@@ -34,6 +34,8 @@ const init = async function(){
         cacheExpire: settings.detectThreadCacheExpire,
     });
 
+    if(settings.blacklistEnabled) handleBlacklist(settings.blacklist);
+
     boardNameLink();
 };
 
@@ -559,7 +561,7 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
             return searchNext();
         };
 
-        let prev = articles.slice(0, articleIndex).find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
+        let prev = articles.slice(0, articleIndex).reverse().find(x => getArticleTitleToken(x.title) === getArticleTitleToken(article.title));
         if (prev) { return prev; }
         let page = articlePage, pageMin = Math.max(page - range, firstPage);
         return searchNext();
@@ -683,6 +685,22 @@ const boardNameLink = function(){
     anchor.classList.add('pwe-board');
     articleMetaValue.innerHTML = '';
     articleMetaValue.appendChild(anchor);
+};
+
+const handleBlacklist = function(blacklist){
+    blacklist = new Set(blacklist);
+    for (const push of $qsa('.push')) {
+        const userId = $qs('.push-userid', push).dataset.userid;
+        if (!blacklist.has(userId)) { continue; }
+        push.classList.add('pwe-blocked-push');
+
+        //標記推文內容產生的圖片或影片預覽
+        let next = push.nextElementSibling;
+        while (next && next.matches('.richcontent')) {
+            next.classList.add('pwe-blocked-push-richcontent');
+            next = next.nextElementSibling;
+        }
+    }
 };
 
 //執行並捕捉可能的錯誤輸出到 console，方便除錯
