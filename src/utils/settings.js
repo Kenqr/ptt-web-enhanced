@@ -11,6 +11,8 @@ const pweSettings = (function(){
         navbarAutohide: true,
         detectThread: false,
         detectThreadRange: 4,
+        blacklistEnabled: true,
+        blacklist: [],
     };
 
     const init = function() {

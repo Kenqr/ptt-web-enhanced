@@ -3,7 +3,12 @@ const init = async function(){
     if ($qs('html.pwe')) { window.location.reload(); }
     $qs('html').classList.add('pwe');
 
+    await pweSettings.ready;
+    const settings = await pweSettings.getAll();
+
     authorMenu();
+
+    if(settings.blacklistEnabled) handleBlacklist(settings.blacklist);
 };
 
 //幫作者ID加上搜尋選單
@@ -59,6 +64,15 @@ const authorMenu = function(){
             ]
         ));
     });
+};
+
+const handleBlacklist = function(blacklist){
+    blacklist = new Set(blacklist);
+    for (const item of $qsa('.r-ent')) {
+        const userId = $qs('.meta .author .pwe-menu__trigger', item).textContent;
+        if (!blacklist.has(userId)) { continue; }
+        item.classList.add('pwe-blocked-article');
+    }
 };
 
 //執行並捕捉可能的錯誤輸出到 console，方便除錯
