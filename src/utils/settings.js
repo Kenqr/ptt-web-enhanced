@@ -10,6 +10,7 @@ const pweSettings = (function(){
         clickToDownloadImage: false,
         navbarAutohide: true,
         detectThread: false,
+        detectThreadRange: 4,
     };
 
     const init = function() {
