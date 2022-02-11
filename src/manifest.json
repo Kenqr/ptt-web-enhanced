@@ -5,7 +5,7 @@
 
     "description": "幫 PTT web 版增加各種方便的功能，例如推文顯示樓層、高亮標示點選 ID 的所有推文、標示文章作者的推文等等。",
 
-    "applications": {
+    "browser_specific_settings": {
         "gecko": {
             "id": "{27376da4-366d-4549-878e-5934e0114107}",
             "strict_min_version": "52.0"
