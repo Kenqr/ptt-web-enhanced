@@ -33,7 +33,7 @@ const $create = function $create(json) {
 
     //加上屬性
     for (const name in attrs) {
-        if (attrs.hasOwnProperty(name)) {
+        if (Object.prototype.hasOwnProperty.call(attrs, name)) {
             elem.setAttribute(name, attrs[name]);
         }
     }
