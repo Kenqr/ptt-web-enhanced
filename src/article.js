@@ -126,7 +126,7 @@ const markPushSections = (function(){
         // 發信站 BBS 名稱
         const bbsNameRegex = /批踢踢實業坊/;
         // 發信站主機名稱（早期文章的主機名稱不是「ptt.cc」）
-        const hostNameRegex = /[\w\.]+/;
+        const hostNameRegex = /[\w.]+/;
         // IP（IPv4）
         const ipRegex = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
         // 日期與時間（mm/dd/yyyy HH:MM:SS）
