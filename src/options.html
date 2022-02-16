@@ -1,91 +1,89 @@
 <!DOCTYPE html>
 <html lang="zh-tw">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <style>
-      body {
-        min-width: 280px;
-        font-family: sans-serif;
-      }
-      footer {
-        margin-top: 50px;
-      }
-    </style>
-  </head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <body>
-    <header>
-      <h1>PTT Web Enhanced 選項</h1>
-    </header>
-    <div>
-      (修改選項後會自動儲存)<br>
-      <br>
+<style>
+body {
+  min-width: 280px;
+  font-family: sans-serif;
+}
+footer {
+  margin-top: 50px;
+}
+</style>
 
-      <label>
-        <input type="checkbox" class="options" name="autoR18">
-        自動勾選已滿十八歲
-      </label>
-      <br>
 
-      <label>
-        <input type="checkbox" class="options" name="showFloor">
-        顯示樓層
-      </label>
-      <br>
+<header>
+  <h1>PTT Web Enhanced 選項</h1>
+</header>
+<div>
+  (修改選項後會自動儲存)<br>
+  <br>
 
-      <label>
-        <input type="checkbox" class="options" name="countPushStatistics">
-        推噓文統計
-      </label>
-      <br>
+  <label>
+    <input type="checkbox" class="options" name="autoR18">
+    自動勾選已滿十八歲
+  </label>
+  <br>
 
-      <label>
-        <input type="checkbox" class="options" name="highlightPosterUserid">
-        作者的推文使用較明顯的箭頭
-      </label>
-      <br>
+  <label>
+    <input type="checkbox" class="options" name="showFloor">
+    顯示樓層
+  </label>
+  <br>
 
-      <label>
-        <input type="checkbox" class="options" name="resizeImage">
-        放大圖片
-      </label>
-      <br>
+  <label>
+    <input type="checkbox" class="options" name="countPushStatistics">
+    推噓文統計
+  </label>
+  <br>
 
-      <label>
-        <input type="checkbox" class="options" name="clickToDownloadImage">
-        點選圖片進行下載
-      </label>
-      <br>
+  <label>
+    <input type="checkbox" class="options" name="highlightPosterUserid">
+    作者的推文使用較明顯的箭頭
+  </label>
+  <br>
 
-      <label>
-        <input type="checkbox" class="options" name="navbarAutohide">
-        頂部和底部導覽列自動隱藏
-      </label>
-      <br>
+  <label>
+    <input type="checkbox" class="options" name="resizeImage">
+    放大圖片
+  </label>
+  <br>
 
-      <label title="自動偵測同主題上下篇文章並產生連結，並使「返回看板」指向文章所在分頁。本功能會在背景向站台發出查詢，會延遲幾秒才生效，且會增加網路流量。">
-        <input type="checkbox" class="options" name="detectThread">
-        自動連結討論串
-        (搜尋前後 <input type="number" required min="0" step="1" style="width: 2.5em;" name="detectThreadRange"> 頁)
-      </label>
-      <br>
+  <label>
+    <input type="checkbox" class="options" name="clickToDownloadImage">
+    點選圖片進行下載
+  </label>
+  <br>
 
-      <label>
-        <input type="checkbox" class="options" name="blacklistEnabled">
-        啟用黑名單
-      </label>
-      <button type="button" id="blacklistSettings">設定黑名單</button>
-      <br>
-    </div>
+  <label>
+    <input type="checkbox" class="options" name="navbarAutohide">
+    頂部和底部導覽列自動隱藏
+  </label>
+  <br>
 
-    <footer>
-      <button type="button" id="resetSettings">將所有選項還原到預設值</button>
-    </footer>
+  <label title="自動偵測同主題上下篇文章並產生連結，並使「返回看板」指向文章所在分頁。本功能會在背景向站台發出查詢，會延遲幾秒才生效，且會增加網路流量。">
+    <input type="checkbox" class="options" name="detectThread">
+    自動連結討論串
+    (搜尋前後 <input type="number" required min="0" step="1" style="width: 2.5em;" name="detectThreadRange"> 頁)
+  </label>
+  <br>
 
-    <script src="lib/browser-polyfill.js"></script>
-    <script src="utils/settings.js"></script>
-    <script src="utils/helpers.js"></script>
-    <script src="options.js"></script>
-  </body>
-</html>
+  <label>
+    <input type="checkbox" class="options" name="blacklistEnabled">
+    啟用黑名單
+  </label>
+  <button type="button" id="blacklistSettings">設定黑名單</button>
+  <br>
+</div>
+
+<footer>
+  <button type="button" id="resetSettings">將所有選項還原到預設值</button>
+</footer>
+
+
+<script src="lib/browser-polyfill.js"></script>
+<script src="utils/settings.js"></script>
+<script src="utils/helpers.js"></script>
+<script src="options.js"></script>
