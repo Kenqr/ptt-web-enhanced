@@ -1,3 +1,5 @@
+/* exported $qsa, $qs, $create, pwe */
+
 //querySelectorAll
 const $qsa = function(selector, baseElement = document){
     return [...baseElement.querySelectorAll(selector)];

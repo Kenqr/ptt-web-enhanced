@@ -1,3 +1,5 @@
+/* exported pweSettings */
+
 const pweSettings = (function(){
     const pweSettings = {};
 
