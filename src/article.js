@@ -487,28 +487,31 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
         if (sepIndex !== -1) { elems = elems.slice(0, sepIndex); }
 
         switch (method) {
-            case 'all':
+            case 'all': {
                 return elems.map(elem => ({
                     id: getArticleId(new URL(elem.href, curUrl)),
                     title: elem.textContent,
                     href: elem.href,
                 }));
-            case 'first':
-                var elem = elems[0];
+            }
+            case 'first': {
+                const elem = elems[0];
                 if (!elem) { return null; }
                 return {
                     id: getArticleId(new URL(elem.href, curUrl)),
                     title: elem.textContent,
                     href: elem.href,
                 };
-            case 'last':
-                var elem = elems.pop();
+            }
+            case 'last': {
+                const elem = elems.pop();
                 if (!elem) { return null; }
                 return {
                     id: getArticleId(new URL(elem.href, curUrl)),
                     title: elem.textContent,
                     href: elem.href,
                 };
+            }
         }
         return null;
     };
