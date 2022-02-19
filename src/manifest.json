@@ -34,6 +34,7 @@
         {
             "matches": [
                 "https://www.ptt.cc/bbs/*/index*.html",
+                "https://www.ptt.cc/bbs/*/index*.html?*",
                 "https://www.ptt.cc/bbs/*/search?*"
             ],
             "js": [
@@ -49,7 +50,10 @@
             "run_at": "document_end"
         },
         {
-            "matches": ["https://www.ptt.cc/bbs/*/M.*.html"],
+            "matches": [
+                "https://www.ptt.cc/bbs/*/M.*.html",
+                "https://www.ptt.cc/bbs/*/M.*.html?*"
+            ],
             "js": [
                 "lib/browser-polyfill.js",
                 "utils/settings.js",
