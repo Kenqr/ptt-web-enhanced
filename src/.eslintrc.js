@@ -13,7 +13,6 @@ module.exports = {
   },
   rules: {
     'no-unused-vars': ['warn', {'args': 'none'}], //處理完成前暫時只警告
-    'no-redeclare': 'warn', //處理完成前暫時只警告
 
     // 'no-var': 'warn', //預訂將開啟
   },

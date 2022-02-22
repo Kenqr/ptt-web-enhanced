@@ -619,21 +619,23 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
         article = articles[articleIndex];
 
         const [prevPage, nextPage] = await Promise.all([seekPrevPage(), seekNextPage()]);
+        let prevPageElem;
         if (prevPage) {
-            var prevPageElem = document.createElement('a');
+            prevPageElem = document.createElement('a');
             prevPageElem.href = prevPage.href;
         } else {
-            var prevPageElem = document.createElement('del');
+            prevPageElem = document.createElement('del');
         }
         prevPageElem.classList.add('pwe-thread');
         prevPageElem.textContent = '上一篇';
         $qs('#navigation').insertBefore(prevPageElem, $qs('#navigation .bar'));
 
+        let nextPageElem;
         if (nextPage) {
-            var nextPageElem = document.createElement('a');
+            nextPageElem = document.createElement('a');
             nextPageElem.href = nextPage.href;
         } else {
-            var nextPageElem = document.createElement('del');
+            nextPageElem = document.createElement('del');
         }
         nextPageElem.classList.add('pwe-thread');
         nextPageElem.textContent = '下一篇';
