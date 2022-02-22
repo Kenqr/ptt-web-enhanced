@@ -533,7 +533,6 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
                     // 此 ID 的文章不存在
                     return -1;
                 }
-                lastId = minId;
                 lastPage = articlePageGuess;
                 return searchNext();
             } else if (articleId > maxId) {
@@ -541,7 +540,6 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
                     // 此 ID 的文章不存在
                     return -1;
                 }
-                firstId = maxId;
                 firstPage = articlePageGuess;
                 return searchNext();
             } else {
@@ -590,15 +588,10 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
     const curUrl = new URL(location.href);
     let articles,
         articleId = getArticleId(curUrl), articlePage = -1, article, articleIndex,
-        firstId, firstPage = 1,
-        lastId, lastPage;
+        firstPage = 1, lastPage;
 
     try {
-        const firstDoc = await fetchListPageDocument(1);
-        firstId = getArticles(firstDoc, 'first').id;
-
         const lastDoc = await fetchListPageDocument();
-        lastId = getArticles(lastDoc, 'last').id;
         const url = $qsa('.btn-group-paging a.btn', lastDoc)[1].href;
         if (url && /\/index(\d+)\.html$/.test(url)) {
           lastPage = parseInt(RegExp.$1, 10) + 1;
