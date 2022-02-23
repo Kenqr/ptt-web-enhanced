@@ -482,8 +482,8 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
     };
 
     const getArticles = function(doc, method = 'all'){
-        var elems = $qsa('.r-list-container .r-ent .title a, .r-list-container .r-list-sep', doc);
-        var sepIndex = elems.findIndex(x => x.classList.contains('r-list-sep'));
+        let elems = $qsa('.r-list-container .r-ent .title a, .r-list-container .r-list-sep', doc);
+        const sepIndex = elems.findIndex(x => x.classList.contains('r-list-sep'));
         if (sepIndex !== -1) { elems = elems.slice(0, sepIndex); }
 
         switch (method) {
@@ -543,7 +543,7 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
                 firstPage = articlePageGuess;
                 return searchNext();
             } else {
-                var article = articles.find(x => x.id === articleId);
+                const article = articles.find(x => x.id === articleId);
                 if (!article) {
                     // 此 ID 的文章不存在
                     return -1;

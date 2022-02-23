@@ -12,6 +12,6 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
-    // 'no-var': 'warn', //預訂將開啟
+    'no-var': 'warn',
   },
 };
