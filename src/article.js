@@ -594,9 +594,9 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
         const lastDoc = await fetchListPageDocument();
         const url = $qsa('.btn-group-paging a.btn', lastDoc)[1].href;
         if (url && /\/index(\d+)\.html$/.test(url)) {
-          lastPage = parseInt(RegExp.$1, 10) + 1;
+            lastPage = parseInt(RegExp.$1, 10) + 1;
         } else {
-          lastPage = 1;
+            lastPage = 1;
         }
 
         articlePage = await seekArticlePage(firstPage, lastPage);
@@ -605,7 +605,7 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
         // 重導向「返回看板」
         const newUrl = new URL(`index${articlePage}.html`, curUrl);
         for (const elem of $qsa('a.board, a.pwe-board')) {
-          elem.href = newUrl.pathname;
+            elem.href = newUrl.pathname;
         }
 
         articleIndex = articles.findIndex(x => x.id === articleId);
