@@ -8,9 +8,24 @@ const init = async function(){
     await pweSettings.ready;
     const settings = await pweSettings.getAll();
 
+    parseArticles();
+
     authorMenu();
 
     if(settings.blacklistEnabled) handleBlacklist(settings.blacklist);
+};
+
+const parseArticles = function(){
+    $qsa('.r-ent').forEach(article => {
+        const authorElem = $qs('.author', article);
+        //作者 ID
+        let author = authorElem.textContent;
+        if (author === '-') { //文章已被刪除，改為由刪文標題取得作者 id
+            const match = $qs('.title', article).textContent.match(/\[(\w+)\]/);
+            if (match) author = match[1];
+        }
+        article.dataset.author = author;
+    });
 };
 
 //幫作者ID加上搜尋選單
