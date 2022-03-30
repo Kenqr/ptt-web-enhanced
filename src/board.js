@@ -33,6 +33,11 @@ const authorMenu = function(){
     //取得板名
     const board = pwe.boardName;
 
+    const copyId = function(id) {
+        navigator.clipboard.writeText(id);
+        pwe.notify('ID 已複製到剪貼簿');
+    };
+
     $qsa('.r-ent').forEach(article => {
         const authorElem = $qs('.author', article);
 
@@ -79,9 +84,19 @@ const authorMenu = function(){
                         },
                         `Google 搜尋 ${author}`,
                     ],
+                    ['a',
+                        {
+                            'class': 'pwe-menu__anchor pwe-menu__copy-id',
+                        },
+                        '複製 ID',
+                    ],
                 ]
             ]
         ));
+
+        //複製 ID 事件
+        const copyIdButton = $qs('.pwe-menu__copy-id', authorElem);
+        copyIdButton.addEventListener('click', () => copyId(author));
     });
 };
 

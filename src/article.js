@@ -311,6 +311,11 @@ const pushUserMenu = function(){
     //取得板名
     const board = pwe.boardName;
 
+    const copyId = function(id) {
+        navigator.clipboard.writeText(id);
+        pwe.notify('ID 已複製到剪貼簿');
+    };
+
     $qsa('.push-userid').forEach(pushUserid => {
         //作者 ID
         const userid = pushUserid.textContent;
@@ -356,9 +361,19 @@ const pushUserMenu = function(){
                         },
                         `Google 搜尋 ${userid}`,
                     ],
+                    ['a',
+                        {
+                            'class': 'pwe-menu__anchor pwe-menu__copy-id',
+                        },
+                        '複製 ID',
+                    ],
                 ]
             ]
         ));
+
+        //複製 ID 事件
+        const copyIdButton = $qs('.pwe-menu__copy-id', pushUserid);
+        copyIdButton.addEventListener('click', () => copyId(userid));
     });
 };
 
