@@ -33,9 +33,11 @@ const authorMenu = function(){
     //取得板名
     const board = pwe.boardName;
 
-    $qsa('.author').forEach(authorElem => {
+    $qsa('.r-ent').forEach(article => {
+        const authorElem = $qs('.author', article);
+
         //作者 ID
-        const author = authorElem.textContent;
+        const author = article.dataset.author;
 
         authorElem.classList.add('pwe-menu');
         authorElem.textContent = '';
@@ -86,9 +88,9 @@ const authorMenu = function(){
 const handleBlacklist = function(blacklist){
     blacklist = new Set(blacklist);
     for (const item of $qsa('.r-ent')) {
-        const userId = $qs('.meta .author .pwe-menu__trigger', item).textContent;
-        if (!blacklist.has(userId)) { continue; }
-        item.classList.add('pwe-blocked-article');
+        if (blacklist.has(item.dataset.author)) {
+            item.classList.add('pwe-blocked-article');
+        }
     }
 };
 
