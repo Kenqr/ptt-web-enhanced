@@ -1,3 +1,19 @@
+/* 隱藏元素 */
+.pwe-hidden {
+    display: none !important;
+}
+
+/* 通知視窗 */
+.pwe-notify {
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    z-index: 101;
+    padding: 5px;
+    background-color: lightblue;
+    box-shadow: 0 0 20px white;
+}
+
 /* 下拉選單 */
 .pwe-menu {
     position: relative;

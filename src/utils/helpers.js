@@ -63,3 +63,25 @@ pwe.boardName = (function(){
     if (!match) return null;
     return match[1];
 })();
+
+//顯示通知訊息
+pwe.notify = (() => {
+    const pweNotify = document.createElement('div');
+    pweNotify.classList.add('pwe-notify', 'pwe-hidden');
+    $qs('body').insertBefore(pweNotify, null);
+    let notifyTimeoutId = undefined;
+
+    return message => {
+        //移除原有的timeout
+        if(notifyTimeoutId) {
+            clearTimeout(notifyTimeoutId);
+            notifyTimeoutId = undefined;
+        }
+        //顯示訊息，並定時移除
+        pweNotify.textContent = message;
+        pweNotify.classList.remove('pwe-hidden');
+        notifyTimeoutId = setTimeout(function(){
+            pweNotify.classList.add('pwe-hidden');
+        }, 5000);
+    };
+})();

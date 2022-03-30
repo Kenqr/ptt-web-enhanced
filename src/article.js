@@ -41,28 +41,6 @@ const init = async function(){
     boardNameLink();
 };
 
-//顯示通知訊息
-const notify = (() => {
-    const pweNotify = document.createElement('div');
-    pweNotify.classList.add('pwe-notify', 'pwe-hidden');
-    $qs('body').insertBefore(pweNotify, null);
-    let notifyTimeoutId = undefined;
-
-    return message => {
-        //移除原有的timeout
-        if(notifyTimeoutId) {
-            clearTimeout(notifyTimeoutId);
-            notifyTimeoutId = undefined;
-        }
-        //顯示訊息，並定時移除
-        pweNotify.textContent = message;
-        pweNotify.classList.remove('pwe-hidden');
-        notifyTimeoutId = setTimeout(function(){
-            pweNotify.classList.add('pwe-hidden');
-        }, 5000);
-    };
-})();
-
 //上方導覽列顯示文章標題
 const showArticleTitle = function(){
     //由文章標題取得討論串標題
@@ -410,7 +388,7 @@ const clickToDownloadImage = function(){
             }).then(function(filename){
                 if (!filename) { return; }
                 //顯示下載完成訊息
-                notify(`圖片已下載至${filename}`);
+                pwe.notify(`圖片已下載至${filename}`);
             });
         });    
     });
