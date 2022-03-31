@@ -1,7 +1,7 @@
 const pweDownloads = new Map();
 
 //收到article.js的訊息就進行下載並回傳檔名
-browser.runtime.onMessage.addListener(function(message, sender, sendResponse){
+browser.runtime.onMessage.addListener(function(message){
     const url = message.url;
     return browser.downloads.download({
         url
