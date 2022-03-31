@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "PTT Web Enhanced",
-    "version": "1.8",
+    "version": "1.9",
 
     "description": "幫 PTT web 版增加各種方便的功能，例如推文顯示樓層、高亮標示點選 ID 的所有推文、標示文章作者的推文等等。",
 
