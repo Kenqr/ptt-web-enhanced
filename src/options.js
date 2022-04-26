@@ -1,3 +1,5 @@
+/* global $qs, $qsa, pweSettings */
+
 const init = async function(){
     await pweSettings.ready;
 
