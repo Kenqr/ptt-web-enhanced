@@ -437,7 +437,7 @@ const detectThread = async function({range, cacheEnabled, cacheExpire} = {}) {
 
         const request = new Request(url, options);
 
-        if (cacheEnabled) {
+        if (cacheEnabled && window.caches) {
             try {
                 // read from cache if available and not expired
                 const cache = await caches.open(CACHE_KEY);
