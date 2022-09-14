@@ -52,7 +52,7 @@ const authorMenu = function(){
             ['div',
                 {
                     'class': 'pwe-menu__trigger pwe-menu__trigger--arrow',
-                    tabindex: '0',
+                    'tabindex': '-1',
                 },
                 author
             ]
@@ -64,25 +64,25 @@ const authorMenu = function(){
                 ['div', {},
                     ['a',
                         {
-                            href: `/bbs/${board}/search?q=author:${author}`,
+                            'href': `/bbs/${board}/search?q=author:${author}`,
                             'class': 'pwe-menu__anchor',
                         },
                         `搜尋看板內 ${author} 的文章`,
                     ],
                     ['a',
                         {
-                            href: `/bbs/ALLPOST/search?q=author:${author}`,
+                            'href': `/bbs/ALLPOST/search?q=author:${author}`,
                             'class': 'pwe-menu__anchor',
                         },
                         `搜尋 ALLPOST 板 ${author} 的文章`,
                     ],
                     ['a',
                         {
-                            href: `https://www.google.com/search?q=site%3Aptt.cc%20${author}`,
-                            target: '_blank',
+                            'href': `https://www.google.com/search?q=${author}+site:ptt.cc`,
+                            'target': '_blank',
                             'class': 'pwe-menu__anchor',
                         },
-                        `Google 搜尋 ${author}`,
+                        `Google 站內搜尋 ${author}`,
                     ],
                     ['a',
                         {
